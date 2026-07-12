@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="入浴予定">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#3E8F86">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./puatto-sync.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing:border-box; }
+  body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+  a { color:#2E6B64; } a:hover { color:#21514c; }
+  input.sf, textarea.sf { font-family:'Noto Sans JP',sans-serif; width:100%; box-sizing:border-box; border:1.5px solid #E1DDD2; border-radius:11px; padding:11px 13px; background:#fff; font-size:15px; color:#2B302E; }
+  input.sf:focus, textarea.sf:focus { outline:none; border-color:#3E8F86; box-shadow:0 0 0 3px rgba(62,143,134,.15); }
+  .seg { cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; }
+  ::-webkit-scrollbar { height:8px; width:8px; } ::-webkit-scrollbar-thumb { background:#d8d4c8; border-radius:8px; }
+</style>
+</helmet>
+<div style="min-height:100vh;max-width:720px;margin:0 auto;padding:0 0 90px">
+
+  <!-- TOP BAR -->
+  <div style="position:sticky;top:0;z-index:20;background:rgba(237,235,227,.92);backdrop-filter:blur(8px);padding:12px 16px 10px;border-bottom:1px solid #E2DFD6">
+    <div style="display:flex;align-items:center;gap:11px">
+      <div style="width:38px;height:38px;border-radius:11px;background:#2E6B64;color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🩹</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:16px;color:#242926;line-height:1.2">スキンケア記録</div>
+        <div style="font-size:11px;color:#8a908b">えんゆうの郷　入浴後の肌チェック</div>
+      </div>
+      <a href="ピュアット週間予定表.dc.html" style="font-size:11px;color:#8a908b;font-weight:700;padding:7px 10px;border:1px solid #E2DFD6;border-radius:9px;white-space:nowrap;text-decoration:none">予定表へ</a>
+    </div>
+  </div>
+
+  <div style="padding:16px">
+
+    <!-- ============ ROSTER (unit + resident list) ============ -->
+    <sc-if value="{{ isRoster }}" hint-placeholder-val="{{ true }}">
+      <!-- unit selector -->
+      <div style="font-size:11px;font-weight:700;color:#8a908b;margin:2px 0 7px">ユニットを選択</div>
+      <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:8px">
+        <sc-for list="{{ unitChips }}" as="u" hint-placeholder-count="8">
+          <button onClick="{{ u.onClick }}" class="seg" style="flex-shrink:0;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;padding:8px 14px;border-radius:10px;border:1px solid {{ u.border }};background:{{ u.bg }};color:{{ u.color }};white-space:nowrap">{{ u.disp }}</button>
+        </sc-for>
+      </div>
+
+      <!-- date nav -->
+      <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #E2DFD6;border-radius:12px;padding:8px 10px;margin-bottom:14px">
+        <button onClick="{{ onPrevDay }}" class="seg" style="width:34px;height:34px;border-radius:9px;border:1px solid #E2DFD6;background:#FAF9F5;font-size:15px;color:#5a605c">◀</button>
+        <div style="flex:1;text-align:center">
+          <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:16px;color:#242926">{{ dateLabel }}</div>
+          <div style="font-size:10.5px;color:#8a908b">{{ unitLabel }}　の記録</div>
+        </div>
+        <button onClick="{{ onNextDay }}" class="seg" style="width:34px;height:34px;border-radius:9px;border:1px solid #E2DFD6;background:#FAF9F5;font-size:15px;color:#5a605c">▶</button>
+        <button onClick="{{ onToday }}" class="seg" style="font-size:11px;font-weight:700;color:#2E6B64;padding:0 10px;height:34px;border-radius:9px;border:1px solid #DCEBE8;background:#EAF3F1;white-space:nowrap">今日</button>
+      </div>
+
+      <sc-if value="{{ hasResidents }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ roster }}" as="r" hint-placeholder-count="6">
+            <button onClick="{{ r.onClick }}" class="seg" style="text-align:left;background:#fff;border:1px solid {{ r.border }};border-left:4px solid {{ r.accent }};border-radius:13px;padding:12px 14px;display:flex;align-items:center;gap:12px">
+              <div style="flex:1;min-width:0">
+                <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">{{ r.name }}</div>
+                <div style="font-size:11px;color:{{ r.statusColor }};margin-top:2px;font-weight:700">{{ r.statusText }}</div>
+              </div>
+              <div style="display:flex;gap:3px;flex-shrink:0">
+                <sc-for list="{{ r.dots }}" as="d" hint-placeholder-count="7">
+                  <span title="{{ d.label }}" style="width:9px;height:9px;border-radius:50%;background:{{ d.color }}"></span>
+                </sc-for>
+              </div>
+              <span style="color:#c7ccc5;font-size:16px;flex-shrink:0">›</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ noResidents }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:26px;text-align:center;color:#a0a59f;font-size:13px;background:#fff;border:1px dashed #E1DDD2;border-radius:13px">このユニットには入居者が登録されていません。</div>
+      </sc-if>
+    </sc-if>
+
+    <!-- ============ RECORD (one resident × date) ============ -->
+    <sc-if value="{{ isRecord }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ onBack }}" class="seg" style="font-size:12px;font-weight:700;color:#2E6B64;background:none;border:none;padding:0 0 12px">‹ 一覧へもどる</button>
+      <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px;margin-bottom:14px">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:10px">
+          <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:20px;color:#242926">{{ recName }}</div>
+          <div style="font-size:12px;color:#8a908b;font-weight:700">{{ dateLabel }}</div>
+        </div>
+        <div style="font-size:11px;color:#8a908b;margin-top:2px">{{ unitLabel }}</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ recItems }}" as="it" hint-placeholder-count="7">
+          <div style="background:#fff;border:1px solid #E2DFD6;border-radius:13px;padding:12px 13px">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:9px">
+              <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14.5px;color:#3a403c">{{ it.label }}</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
+              <sc-for list="{{ it.opts }}" as="o" hint-placeholder-count="4">
+                <button onClick="{{ o.onClick }}" class="seg" style="padding:9px 0;border-radius:9px;border:1.5px solid {{ o.border }};background:{{ o.bg }};color:{{ o.color }};font-weight:700;font-size:13px">{{ o.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+
+        <!-- memo -->
+        <div style="background:#fff;border:1px solid #E2DFD6;border-radius:13px;padding:12px 13px">
+          <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14.5px;color:#3a403c;margin-bottom:8px">自由メモ</div>
+          <textarea class="sf" rows="3" value="{{ recMemo }}" onInput="{{ onMemo }}" placeholder="気づいたこと・処置内容など"></textarea>
+        </div>
+
+        <!-- photo (device only) -->
+        <div style="background:#fff;border:1px solid #E2DFD6;border-radius:13px;padding:12px 13px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+            <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14.5px;color:#3a403c">写真</span>
+            <span style="font-size:10px;color:#a0a59f">この端末にのみ保存</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <label class="seg" style="font-size:12px;font-weight:700;color:#fff;padding:9px 14px;border:1px solid #2E6B64;background:#2E6B64;border-radius:10px">
+              📷 カメラで撮影
+              <input type="file" accept="image/*" capture="environment" onChange="{{ onPhoto }}" style="display:none">
+            </label>
+            <label class="seg" style="font-size:12px;font-weight:700;color:#2E6B64;padding:9px 14px;border:1px solid #DCEBE8;background:#EAF3F1;border-radius:10px">
+              🖼 画像を選ぶ
+              <input type="file" accept="image/*" onChange="{{ onPhoto }}" style="display:none">
+            </label>
+            <a href="https://skin-care-app.onrender.com" target="_blank" rel="noopener" class="seg" style="font-size:12px;font-weight:700;color:#7a4bd0;padding:9px 14px;border:1px solid #DDD0F0;background:#F3EEFB;border-radius:10px;text-decoration:none">🔬 AIで判定を開く</a>
+            <sc-if value="{{ hasPhoto }}" hint-placeholder-val="{{ false }}">
+              {{ photoThumb }}
+            </sc-if>
+          </div>
+        </div>
+
+        <div style="font-size:11px;color:#8a908b;text-align:center;padding:6px">入力は自動で保存され、全端末に同期されます（写真を除く）。</div>
+      </div>
+    </sc-if>
+
+    <!-- ============ REVIEW ============ -->
+    <sc-if value="{{ isReview }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:6px;overflow-x:auto;margin-bottom:14px">
+        <sc-for list="{{ reviewTabs }}" as="t" hint-placeholder-count="4">
+          <button onClick="{{ t.onClick }}" class="seg" style="flex-shrink:0;font-weight:700;font-size:12.5px;padding:8px 13px;border-radius:9px;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.color }};white-space:nowrap">{{ t.label }}</button>
+        </sc-for>
+      </div>
+
+      <!-- unit + month/day context -->
+      <div style="display:flex;gap:7px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px">
+        <sc-for list="{{ unitChips }}" as="u" hint-placeholder-count="8">
+          <button onClick="{{ u.onClick }}" class="seg" style="flex-shrink:0;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;padding:7px 13px;border-radius:10px;border:1px solid {{ u.border }};background:{{ u.bg }};color:{{ u.color }};white-space:nowrap">{{ u.disp }}</button>
+        </sc-for>
+      </div>
+
+      <!-- TODAY LIST -->
+      <sc-if value="{{ rvToday }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <button onClick="{{ onPrevDay }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">◀</button>
+          <div style="flex:1;text-align:center;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:15px;color:#242926">{{ dateLabel }}</div>
+          <button onClick="{{ onNextDay }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">▶</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E2DFD6;border-radius:13px;overflow-x:auto">
+          <table style="border-collapse:collapse;width:100%;min-width:520px">
+            <thead>
+              <tr style="background:#F1F7F6">
+                <th style="text-align:left;font-size:11px;color:#6b716c;padding:9px 12px;position:sticky;left:0;background:#F1F7F6">入居者</th>
+                <sc-for list="{{ itemHeads }}" as="h" hint-placeholder-count="7"><th style="font-size:10.5px;color:#6b716c;padding:9px 4px;white-space:nowrap">{{ h }}</th></sc-for>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ todayRows }}" as="row" hint-placeholder-count="6">
+                <tr style="border-top:1px solid #F1EFE8">
+                  <td style="font-size:12.5px;font-weight:700;color:#3a403c;padding:8px 12px;white-space:nowrap;position:sticky;left:0;background:#fff">{{ row.name }}</td>
+                  <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="7">
+                    <td style="text-align:center;padding:6px 4px"><span style="display:inline-block;min-width:20px;height:20px;line-height:20px;border-radius:6px;font-size:10.5px;font-weight:700;background:{{ c.bg }};color:{{ c.color }}">{{ c.txt }}</span></td>
+                  </sc-for>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:10.5px;color:#8a908b;margin-top:8px">凡例：<span style="color:#E7B84B;font-weight:700">軽</span>・<span style="color:#E08A3C;font-weight:700">中</span>・<span style="color:#C0392B;font-weight:700">重</span>（空欄＝異常なし／未記録）</div>
+      </sc-if>
+
+      <!-- TREND (per resident month) -->
+      <sc-if value="{{ rvTrend }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:11px;font-weight:700;color:#8a908b;margin-bottom:7px">入居者を選択</div>
+        <div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;margin-bottom:12px">
+          <sc-for list="{{ resChips }}" as="r" hint-placeholder-count="6">
+            <button onClick="{{ r.onClick }}" class="seg" style="flex-shrink:0;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:9px;border:1px solid {{ r.border }};background:{{ r.bg }};color:{{ r.color }};white-space:nowrap">{{ r.name }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+          <button onClick="{{ onPrevMonth }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">◀</button>
+          <div style="flex:1;text-align:center;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:15px;color:#242926">{{ monthLabel }}　{{ trendName }}</div>
+          <button onClick="{{ onNextMonth }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">▶</button>
+        </div>
+        <div style="background:#fff;border:1px solid #E2DFD6;border-radius:13px;padding:14px;overflow-x:auto">
+          <table style="border-collapse:collapse;min-width:640px;width:100%">
+            <thead>
+              <tr>
+                <th style="text-align:left;font-size:10.5px;color:#6b716c;padding:4px 8px 8px;position:sticky;left:0;background:#fff">項目＼日</th>
+                <sc-for list="{{ monthDays }}" as="d" hint-placeholder-count="30"><th style="font-size:9px;color:#8a908b;padding:2px;font-weight:500;width:16px">{{ d.d }}</th></sc-for>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ trendRows }}" as="row" hint-placeholder-count="7">
+                <tr>
+                  <td style="font-size:11px;font-weight:700;color:#3a403c;padding:3px 8px;white-space:nowrap;position:sticky;left:0;background:#fff">{{ row.label }}</td>
+                  <sc-for list="{{ row.days }}" as="c" hint-placeholder-count="30">
+                    <td style="padding:1px"><div title="{{ c.title }}" style="width:15px;height:15px;border-radius:3px;background:{{ c.color }}"></div></td>
+                  </sc-for>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </sc-if>
+
+      <!-- ITEMS aggregate -->
+      <sc-if value="{{ rvItems }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+          <button onClick="{{ onPrevMonth }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">◀</button>
+          <div style="flex:1;text-align:center;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:15px;color:#242926">{{ monthLabel }}　{{ unitLabel }}</div>
+          <button onClick="{{ onNextMonth }}" class="seg" style="width:30px;height:30px;border-radius:8px;border:1px solid #E2DFD6;background:#fff;color:#5a605c">▶</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <sc-for list="{{ itemAgg }}" as="a" hint-placeholder-count="7">
+            <div style="background:#fff;border:1px solid #E2DFD6;border-radius:12px;padding:11px 14px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px">
+                <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;color:#3a403c">{{ a.label }}</span>
+                <span style="font-size:12px;font-weight:700;color:#3a403c">{{ a.totalLabel }}</span>
+              </div>
+              <div style="display:flex;height:10px;border-radius:999px;overflow:hidden;background:#F1EFE8">
+                <div style="width:{{ a.wLight }};background:#E7B84B"></div>
+                <div style="width:{{ a.wMid }};background:#E08A3C"></div>
+                <div style="width:{{ a.wHeavy }};background:#C0392B"></div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- WATCH -->
+      <sc-if value="{{ rvWatch }}" hint-placeholder-val="{{ false }}">
+        <div style="font-size:12px;color:#8a908b;margin-bottom:10px">直近7日間に<b style="color:#C0392B">中度・重度</b>が記録された入居者</div>
+        <sc-if value="{{ hasWatch }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:9px">
+            <sc-for list="{{ watchList }}" as="w" hint-placeholder-count="3">
+              <button onClick="{{ w.onClick }}" class="seg" style="text-align:left;background:#fff;border:1px solid #F1CFC7;border-left:4px solid #C0392B;border-radius:13px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+                <div style="flex:1;min-width:0">
+                  <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">{{ w.name }}</div>
+                  <div style="font-size:11.5px;color:#a5402b;margin-top:2px">{{ w.detail }}</div>
+                </div>
+                <span style="color:#c7ccc5;font-size:16px">›</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noWatch }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:26px;text-align:center;color:#3E8F86;font-size:13px;font-weight:700;background:#EAF3F1;border:1px solid #DCEBE8;border-radius:13px">直近7日間に中度・重度の記録はありません。</div>
+        </sc-if>
+      </sc-if>
+    </sc-if>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div style="position:fixed;bottom:0;left:0;right:0;z-index:30;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid #E2DFD6;display:flex;padding:8px 12px calc(8px + env(safe-area-inset-bottom));max-width:720px;margin:0 auto">
+    <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="2">
+      <button onClick="{{ n.onClick }}" class="seg" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;padding:6px 0;color:{{ n.color }}">
+        <span style="font-size:19px">{{ n.icon }}</span>
+        <span style="font-size:10.5px;font-weight:700">{{ n.label }}</span>
+      </button>
+    </sc-for>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.ITEMS = [
+      { k:'hatsuseki', label:'発赤' },
+      { k:'kanso',     label:'乾燥' },
+      { k:'soyo',      label:'掻痒' },
+      { k:'hyohi',     label:'表皮剥離' },
+      { k:'jokuso',    label:'褥瘡' },
+      { k:'naishu',    label:'内出血' },
+      { k:'fushu',     label:'浮腫' },
+    ];
+    this.LV = [
+      { v:0, label:'なし', bg:'#FBFAF7', border:'#E2DFD6', color:'#a0a59f' },
+      { v:1, label:'軽',   bg:'#FBF2DA', border:'#E7B84B', color:'#9a7a1e' },
+      { v:2, label:'中',   bg:'#FBE7D4', border:'#E08A3C', color:'#a5551a' },
+      { v:3, label:'重',   bg:'#FBE0DA', border:'#C0392B', color:'#a5301f' },
+    ];
+    this.SEVCOLOR = ['#EFEDE5', '#E7B84B', '#E08A3C', '#C0392B'];
+    const iso = this.todayISO();
+    this.state = { view:'roster', unitId:'hana', resIdx:0, dateISO:iso, reviewTab:'today', now:Date.now() };
+  }
+
+  units(){ return [
+    {id:'hana',disp:'華',grp:'1号館 1階'},{id:'jyu',disp:'柔',grp:'1号館 1階'},{id:'ai',disp:'逢(SS)',grp:'1号館 1階'},
+    {id:'mei',disp:'明',grp:'1号館 2階'},{id:'subaru',disp:'昴',grp:'1号館 2階'},{id:'tomo',disp:'智',grp:'1号館 2階'},{id:'en',disp:'縁',grp:'1号館 2階'},
+    {id:'karasaki',disp:'唐崎',grp:'2号館 1階'},{id:'kihan',disp:'帰帆',grp:'2号館 1階'},{id:'sekisho',disp:'夕照',grp:'2号館 1階'},
+    {id:'seiran',disp:'晴嵐',grp:'2号館 2階'},{id:'bosetsu',disp:'暮雪',grp:'2号館 2階'},{id:'bansho',disp:'晩鐘',grp:'2号館 2階'},{id:'shugetsu',disp:'秋月',grp:'2号館 2階'},
+  ]; }
+  residents(){ return {
+    hana:['田中 清子','潟淵 治雄','田渕 きみ子','谷口 千代子','團野 ふさゑ','斎藤 ゑみ子','内堀 光雄','金田 八重子','内堀 まさ枝','大前 治雄'],
+    jyu:['日比野 初江','児玉 槇子','山本 始子','田中 由美','松田 栄美子','山本 靜子','東野 初子','大熊 みき','牟田 津代子','川原 啓嗣'],
+    ai:[],
+    mei:['山口 達浩','佐藤 美智子','福谷 義子','上田 弘子','百田 百合子','矢野 清美','杉江 幸','浅井 美佐子','松田 脩','鈴木 つや子'],
+    subaru:['中村 照子','明石 幸江','高取 秋野','森口 きよ子','森田 幸子','三田村 美代子','横江 貞子','中嶋 佳子','能登 俊子','西川 邦子'],
+    tomo:['竹川 幸子','加門 美喜子','岡根 萠子','松井 郁子','久泉 昭枝','木村 光栄','細野 千恵子','金澤 重夫','川口 美代子','舘 榮子'],
+    en:['山本 智樹','饗場 郁子','橋本 恵美子','出倉 幸代','野添 輝子','小林 美智子','中村 照榮','菱 愛子','松井 弘子','堀 満壽美'],
+    karasaki:['工藤 ハマ','横江 一美','寺田 富榮','松田 よし子','谷 清三','植村 祐子','黒川 米次郎','梅原 宣子','北出 和子','猪狩 末富'],
+    kihan:['徳重 悦子','小幡 美代子','藤田 三四子','小野 千恵子','岡田 弘子','岩田 健次','伊庭 ひさ','山本 悦子','大井 幸枝','安井 絹子'],
+    sekisho:['鈎 清次','潟淵 幸枝','山田 みち子','深見 道子','松田 たつ子','大久保 綾子','有田 己吉','中出 房枝','小半 桂子','後藤 孝子'],
+    seiran:['黒田 榮子','森田 正代','岡田 八郎','水口 まさ子','吉田 固行','小森 美代子','岩花 美智子','田島 悦子','貴島 惠子','杉江 房江'],
+    bosetsu:['田淵 つね','野村 南千代','吉野 ヨシ子','橋本 有子','辻 綾子','増田 和子','佐藤 桂子','山田 久','泉谷 とよ子','小寺 泰榮'],
+    bansho:['河村 實','木村 ふさ江','田中 榮造','山本 三男','遠藤 テル','平井 勝子','横江 増枝','佐伯 宣子','宮川 君江','瀧 進'],
+    shugetsu:['杉江 峰子','打田 智津枝','來海 道子','川井 博子','荒堀 希友子','森下 敏行','日下 紀美子','上林 清孝','大槻 加代子','津野 由美代'],
+  }; }
+
+  // ---- dates ----
+  pad(n){ return String(n).padStart(2,'0'); }
+  todayISO(){ const d=new Date(); return d.getFullYear()+'-'+this.pad(d.getMonth()+1)+'-'+this.pad(d.getDate()); }
+  parseISO(iso){ const p=(iso||'').split('-'); return new Date(+p[0], (+p[1])-1, +p[2]); }
+  toISO(d){ return d.getFullYear()+'-'+this.pad(d.getMonth()+1)+'-'+this.pad(d.getDate()); }
+  shiftDay(iso, n){ const d=this.parseISO(iso); d.setDate(d.getDate()+n); return this.toISO(d); }
+  shiftMonth(iso, n){ const d=this.parseISO(iso); d.setMonth(d.getMonth()+n); return this.toISO(d); }
+  fmtDate(iso){ const d=this.parseISO(iso); const w=['日','月','火','水','木','金','土'][d.getDay()]; return (d.getMonth()+1)+'月'+d.getDate()+'日('+w+')'; }
+  fmtMonth(iso){ const d=this.parseISO(iso); return d.getFullYear()+'年'+(d.getMonth()+1)+'月'; }
+
+  // ---- storage ----
+  skinKey(unitId){ return 'puatto-skin-'+unitId; }
+  loadSkin(unitId){ try { return JSON.parse(localStorage.getItem(this.skinKey(unitId))) || {}; } catch(e){ return {}; } }
+  recId(resIdx, iso){ return resIdx+'|'+iso; }
+  getRec(unitId, resIdx, iso){ const a=this.loadSkin(unitId); return a[this.recId(resIdx,iso)] || {}; }
+  setRec(unitId, resIdx, iso, patch){
+    const a = this.loadSkin(unitId);
+    const id = this.recId(resIdx, iso);
+    const rec = Object.assign({}, a[id], patch);
+    // strip empty
+    Object.keys(rec).forEach(k=>{ if(rec[k]===0 || rec[k]==='' || rec[k]==null) delete rec[k]; });
+    if(Object.keys(rec).length) a[id]=rec; else delete a[id];
+    try { localStorage.setItem(this.skinKey(unitId), JSON.stringify(a)); } catch(e){}
+    this.forceUpdate();
+  }
+  photoKey(unitId, resIdx, iso){ return 'skinphoto-'+unitId+'-'+resIdx+'-'+iso; } // NO puatto- prefix => not synced
+  getPhoto(unitId, resIdx, iso){ try { return localStorage.getItem(this.photoKey(unitId,resIdx,iso)) || ''; } catch(e){ return ''; } }
+
+  worst(rec){ let m=0; this.ITEMS.forEach(it=>{ const v=rec[it.k]||0; if(v>m)m=v; }); return m; }
+
+  componentDidMount(){ this._sync=()=>this.forceUpdate(); window.addEventListener('puatto-synced', this._sync); }
+  componentWillUnmount(){ window.removeEventListener('puatto-synced', this._sync); }
+
+  go(view, patch){ this.setState(Object.assign({ view }, patch||{})); }
+
+  renderVals(){
+    const S = this.state;
+    const units = this.units();
+    const resAll = this.residents();
+    const unit = units.find(u=>u.id===S.unitId) || units[0];
+    const resList = resAll[S.unitId] || [];
+    const dateLabel = this.fmtDate(S.dateISO);
+    const monthLabel = this.fmtMonth(S.dateISO);
+    const unitLabel = unit.disp + 'ユニット';
+
+    const unitChips = units.map(u=>({
+      disp:u.disp,
+      bg: u.id===S.unitId ? '#2E6B64' : '#fff',
+      color: u.id===S.unitId ? '#fff' : '#3a403c',
+      border: u.id===S.unitId ? '#2E6B64' : '#E2DFD6',
+      onClick: ()=> this.setState({ unitId:u.id, resIdx:0 }),
+    }));
+
+    const nav = (v)=>({ active: S.view===v });
+    const navItems = [
+      { icon:'📝', label:'記録', color: (S.view==='roster'||S.view==='record')?'#2E6B64':'#a0a59f', onClick:()=>this.go('roster') },
+      { icon:'📊', label:'振り返り', color: S.view==='review'?'#2E6B64':'#a0a59f', onClick:()=>this.go('review') },
+    ];
+
+    const out = {
+      isRoster: S.view==='roster', isRecord: S.view==='record', isReview: S.view==='review',
+      unitChips, navItems, dateLabel, monthLabel, unitLabel,
+      onPrevDay: ()=> this.setState({ dateISO: this.shiftDay(S.dateISO,-1) }),
+      onNextDay: ()=> this.setState({ dateISO: this.shiftDay(S.dateISO, 1) }),
+      onToday: ()=> this.setState({ dateISO: this.todayISO() }),
+      onPrevMonth: ()=> this.setState({ dateISO: this.shiftMonth(S.dateISO,-1) }),
+      onNextMonth: ()=> this.setState({ dateISO: this.shiftMonth(S.dateISO, 1) }),
+      onBack: ()=> this.go('roster'),
+      itemHeads: this.ITEMS.map(i=>i.label),
+    };
+
+    // ---- ROSTER ----
+    const skin = this.loadSkin(S.unitId);
+    out.hasResidents = resList.length>0;
+    out.noResidents = resList.length===0;
+    out.roster = resList.map((name, idx)=>{
+      const rec = skin[this.recId(idx, S.dateISO)] || {};
+      const w = this.worst(rec);
+      const recorded = Object.keys(rec).length>0;
+      const dots = this.ITEMS.map(it=>({ label:it.label, color: this.SEVCOLOR[rec[it.k]||0] }));
+      let statusText, statusColor;
+      if(!recorded){ statusText='未記録'; statusColor='#b5b9b2'; }
+      else if(w>=3){ statusText='重度あり'; statusColor='#C0392B'; }
+      else if(w>=2){ statusText='中度あり'; statusColor='#E08A3C'; }
+      else if(w>=1){ statusText='軽度あり'; statusColor='#c99a2e'; }
+      else { statusText='異常なし'; statusColor='#3E8F86'; }
+      return {
+        name, statusText, statusColor, dots,
+        accent: this.SEVCOLOR[w] === '#EFEDE5' ? (recorded?'#3E8F86':'#E2DFD6') : this.SEVCOLOR[w],
+        border:'#E2DFD6',
+        onClick: ()=> this.go('record', { resIdx: idx }),
+      };
+    });
+
+    // ---- RECORD ----
+    if(S.view==='record'){
+      const rec = skin[this.recId(S.resIdx, S.dateISO)] || {};
+      out.recName = resList[S.resIdx] || '';
+      out.recMemo = rec.memo || '';
+      out.recItems = this.ITEMS.map(it=>{
+        const cur = rec[it.k]||0;
+        return { label:it.label, opts: this.LV.map(l=>({
+          label:l.label,
+          bg: cur===l.v ? (l.v===0?'#EFEDE5':l.bg) : '#fff',
+          border: cur===l.v ? l.border : '#E2DFD6',
+          color: cur===l.v ? l.color : '#b5b9b2',
+          onClick: ()=> this.setRec(S.unitId, S.resIdx, S.dateISO, { [it.k]: l.v }),
+        })) };
+      });
+      out.onMemo = (e)=> this.setRec(S.unitId, S.resIdx, S.dateISO, { memo: e.target.value });
+      const photo = this.getPhoto(S.unitId, S.resIdx, S.dateISO);
+      out.hasPhoto = !!photo;
+      const onDel = ()=>{ try{ localStorage.removeItem(this.photoKey(S.unitId,S.resIdx,S.dateISO)); }catch(e){} this.forceUpdate(); };
+      out.photoThumb = photo ? React.createElement('div', { style:{ position:'relative' } },
+        React.createElement('img', { src: photo, alt:'', style:{ width:'56px', height:'56px', objectFit:'cover', borderRadius:'10px', border:'1px solid #E2DFD6' } }),
+        React.createElement('button', { onClick: onDel, className:'seg', style:{ position:'absolute', top:'-7px', right:'-7px', width:'22px', height:'22px', borderRadius:'50%', background:'#C0392B', color:'#fff', border:'2px solid #fff', fontSize:'12px', lineHeight:1 } }, '×')
+      ) : null;
+      out.onPhoto = (e)=>{
+        const f = e.target.files && e.target.files[0]; if(!f) return;
+        const rd = new FileReader();
+        rd.onload = ()=>{ try{ localStorage.setItem(this.photoKey(S.unitId,S.resIdx,S.dateISO), rd.result); }catch(err){ alert('写真が大きすぎて保存できません'); } this.forceUpdate(); };
+        rd.readAsDataURL(f);
+      };
+      out.onDelPhoto = ()=>{ try{ localStorage.removeItem(this.photoKey(S.unitId,S.resIdx,S.dateISO)); }catch(e){} this.forceUpdate(); };
+    }
+
+    // ---- REVIEW ----
+    if(S.view==='review'){
+      const tabs = [ {k:'today',label:'当日一覧'},{k:'trend',label:'月間推移'},{k:'items',label:'項目別'},{k:'watch',label:'気になる人'} ];
+      out.reviewTabs = tabs.map(t=>({
+        label:t.label,
+        bg: S.reviewTab===t.k?'#2E6B64':'#fff', color:S.reviewTab===t.k?'#fff':'#3a403c', border:S.reviewTab===t.k?'#2E6B64':'#E2DFD6',
+        onClick: ()=> this.setState({ reviewTab:t.k }),
+      }));
+      out.rvToday = S.reviewTab==='today';
+      out.rvTrend = S.reviewTab==='trend';
+      out.rvItems = S.reviewTab==='items';
+      out.rvWatch = S.reviewTab==='watch';
+
+      // TODAY
+      if(S.reviewTab==='today'){
+        out.todayRows = resList.map((name,idx)=>{
+          const rec = skin[this.recId(idx,S.dateISO)]||{};
+          return { name, cells: this.ITEMS.map(it=>{
+            const v=rec[it.k]||0;
+            return { txt: v?['','軽','中','重'][v]:'', bg: v?this.SEVCOLOR[v]:'transparent', color: v?'#fff':'#c7ccc5' };
+          }) };
+        });
+      }
+      // TREND
+      if(S.reviewTab==='trend'){
+        out.resChips = resList.map((name,idx)=>({
+          name,
+          bg: idx===S.resIdx?'#2E6B64':'#fff', color:idx===S.resIdx?'#fff':'#3a403c', border:idx===S.resIdx?'#2E6B64':'#E2DFD6',
+          onClick: ()=> this.setState({ resIdx: idx }),
+        }));
+        out.trendName = resList[S.resIdx] || '';
+        const d = this.parseISO(S.dateISO); const y=d.getFullYear(), mo=d.getMonth();
+        const dim = new Date(y, mo+1, 0).getDate();
+        out.monthDays = Array.from({length:dim}, (_,i)=>({ d:i+1 }));
+        out.trendRows = this.ITEMS.map(it=>({
+          label: it.label,
+          days: Array.from({length:dim}, (_,i)=>{
+            const iso = y+'-'+this.pad(mo+1)+'-'+this.pad(i+1);
+            const v = (skin[this.recId(S.resIdx,iso)]||{})[it.k]||0;
+            return { color: this.SEVCOLOR[v], title: (i+1)+'日 '+it.label+' '+['','軽','中','重'][v] };
+          }),
+        }));
+      }
+      // ITEMS aggregate (month, unit)
+      if(S.reviewTab==='items'){
+        const d=this.parseISO(S.dateISO); const y=d.getFullYear(), mo=d.getMonth();
+        const dim=new Date(y,mo+1,0).getDate();
+        const agg={}; this.ITEMS.forEach(it=>agg[it.k]={1:0,2:0,3:0});
+        resList.forEach((n,idx)=>{ for(let day=1;day<=dim;day++){ const iso=y+'-'+this.pad(mo+1)+'-'+this.pad(day); const rec=skin[this.recId(idx,iso)]; if(!rec)continue; this.ITEMS.forEach(it=>{ const v=rec[it.k]||0; if(v>=1) agg[it.k][v]++; }); } });
+        let maxTot=1; this.ITEMS.forEach(it=>{ const t=agg[it.k][1]+agg[it.k][2]+agg[it.k][3]; if(t>maxTot)maxTot=t; });
+        out.itemAgg = this.ITEMS.map(it=>{
+          const a=agg[it.k]; const tot=a[1]+a[2]+a[3];
+          return { label:it.label, totalLabel: tot+'件',
+            wLight:(a[1]/maxTot*100)+'%', wMid:(a[2]/maxTot*100)+'%', wHeavy:(a[3]/maxTot*100)+'%' };
+        });
+      }
+      // WATCH (last 7 days across unit)
+      if(S.reviewTab==='watch'){
+        const list=[];
+        resList.forEach((name,idx)=>{
+          const hits=[];
+          for(let n=0;n<7;n++){ const iso=this.shiftDay(S.dateISO,-n); const rec=skin[this.recId(idx,iso)]; if(!rec)continue;
+            this.ITEMS.forEach(it=>{ const v=rec[it.k]||0; if(v>=2) hits.push(this.fmtDate(iso).replace(/\(.*\)/,'')+' '+it.label+['','','（中）','（重）'][v]); }); }
+          if(hits.length) list.push({ name, detail: hits.slice(0,4).join('、')+(hits.length>4?' 他':''), onClick:()=>this.go('record',{resIdx:idx}) });
+        });
+        out.hasWatch=list.length>0; out.noWatch=list.length===0; out.watchList=list;
+      }
+    }
+
+    return out;
+  }
+}
+</script>
+</body>
+</html>
