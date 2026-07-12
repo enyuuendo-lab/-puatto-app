@@ -19,7 +19,7 @@
   if (window.__puattoSync) return;            // 二重読み込み防止
 
   // ▼▼ ここに GAS ウェブアプリの URL を貼り付けてもOK（右下ピルからでも設定可）▼▼
-  var GAS_URL = 'https://script.google.com/macros/s/AKfycbwQO-BaSB7SfrMoDvwBuxdCpvmm0rzHOsdAx70ensr-OIMq2bBQ0PgvkfDRJUeao3eG/exec';
+  var GAS_URL = '';
   // ▲▲ 例: 'https://script.google.com/macros/s/AKfy..../exec' ▲▲
 
   var URL_KEY   = 'puatto-sync-url';
@@ -41,7 +41,6 @@
   var applying = false;       // pull適用中の再送を防ぐ
   var pushTimer = null;
   var status = 'idle';        // idle | ok | offline | error | unset
-  var lastRecvKeys = null;    // 直近のpullで受信した同期キー数
 
   function parse(v) { try { return v ? JSON.parse(v) : {}; } catch (e) { return {}; } }
 
@@ -131,12 +130,7 @@
     function cleanup() { clearTimeout(timer); delete window[cb]; if (s.parentNode) s.parentNode.removeChild(s); }
     window[cb] = function (resp) {
       cleanup();
-      try {
-        var d = (resp && resp.data) || {};
-        applyRemote(d);
-        lastRecvKeys = Object.keys(d).filter(shouldSync).length;
-        setStatus('ok');
-      }
+      try { applyRemote((resp && resp.data) || {}); setStatus('ok'); }
       catch (e) { setStatus('error'); }
     };
     s.onerror = function () { cleanup(); setStatus('offline'); };
@@ -233,9 +227,7 @@
     };
     var m = map[status] || map.idle;
     dot.style.background = m[0];
-    var txt = m[1];
-    if (status === 'ok' && lastRecvKeys !== null) txt += '（受信' + lastRecvKeys + '件）';
-    label.textContent = txt;
+    label.textContent = m[1];
   }
 
   // ---- 起動 -----------------------------------------------------------

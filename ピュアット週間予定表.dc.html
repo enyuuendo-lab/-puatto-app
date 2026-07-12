@@ -2,20 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="入浴予定">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#3E8F86">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 </head>
 <body>
 <x-dc>
 <helmet>
-<script src="./puatto-sync.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
@@ -23,30 +15,26 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: #EDEBE3; font-family: 'Noto Sans JP', sans-serif; -webkit-font-smoothing: antialiased; color: #2B302E; }
   a { color: #2E6B64; } a:hover { color: #21514c; }
-  @media print { .noprint { display:none !important; } }
   select.uw { font-family:'Noto Sans JP',sans-serif; width:100%; border:1px solid #E1DDD2; border-radius:8px; padding:6px 4px; background:#fff; font-size:12.5px; cursor:pointer; text-align:center; text-align-last:center; }
   select.uw:focus { outline:2px solid #9cc7c0; }
   select.ut { font-size:10.5px; padding:4px 3px; }
 
-  @page { size: A4 landscape; margin: 5mm; }
-  @media print { html, body { background:#fff !important; } }
-  .app-wrap.printmode { padding:0 !important; max-width:none !important; width:1084px !important; min-height:0 !important; }
-  .app-wrap.printmode .noprint { display:none !important; }
-  .app-wrap.printmode .bldcard { border:none !important; box-shadow:none !important; border-radius:0 !important; padding:0 !important; margin:0 0 4px !important; break-inside:avoid; }
-  .app-wrap.printmode .bldhead { margin-bottom:4px !important; gap:8px !important; }
-  .app-wrap.printmode .bldhead img { display:none !important; }
-  .app-wrap.printmode .bldhead .bldsub { display:none !important; }
-  .app-wrap.printmode .dhdr { padding:2px 0 !important; }
-  .app-wrap.printmode .dhdr > div:first-child { font-size:11px !important; }
-  .app-wrap.printmode .dhdr > div:last-child { font-size:8px !important; }
-  .app-wrap.printmode .rlabel { padding:0 4px !important; flex-direction:row !important; align-items:baseline !important; gap:4px !important; white-space:nowrap; overflow:hidden; }
-  .app-wrap.printmode .rlabel > span:first-child { font-size:7px !important; line-height:1 !important; }
-  .app-wrap.printmode .rlabel > span:last-child { font-size:8.5px !important; line-height:1 !important; }
-  .app-wrap.printmode .tscroll { overflow:visible !important; margin:0 !important; padding:0 !important; }
-  .app-wrap.printmode .tgrid { min-width:0 !important; width:100% !important; gap:2px !important; }
-  .app-wrap.printmode .tgrid > div { gap:2px !important; }
-  .app-wrap.printmode .prow { flex-direction:column !important; align-items:stretch !important; padding:2px !important; gap:2px !important; justify-content:center !important; min-height:0 !important; }
-  .app-wrap.printmode .prow > span { font-size:8px !important; padding:1px 4px !important; line-height:1.2 !important; }
+  @page { size: A4 landscape; margin: 7mm; }
+  @media print {
+    html, body { background:#fff !important; }
+    .app-wrap { padding:0 !important; max-width:none !important; }
+    .noprint { display:none !important; }
+    .bldcard { border:none !important; box-shadow:none !important; border-radius:0 !important; padding:0 !important; margin:0 !important; break-inside:avoid; }
+    .bldcard.pagebreak { break-before:page; }
+    .tscroll { overflow:visible !important; margin:0 !important; padding:0 !important; }
+    .tgrid { min-width:0 !important; width:100% !important; gap:3px !important; }
+    .tgrid > div { gap:3px !important; }
+    select.uw { -webkit-appearance:none; appearance:none; border-color:#D5D0C4 !important; padding:2px 1px !important; font-size:10px !important; }
+    select.ut { font-size:9px !important; }
+    .bldcard .prow { align-items:stretch; }
+    .print-only { display:block !important; }
+  }
+  .print-only { display:none; }
 </style>
 </helmet>
 <div class="app-wrap" style="min-height:100vh;padding:26px 30px 36px;max-width:1240px;margin:0 auto">
@@ -106,7 +94,7 @@
 
   <!-- ZONE 1 : 1号館 -->
   <div class="bldcard" style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
-    <div class="bldhead" style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+    <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
       <div style="position:relative;flex-shrink:0">
         <div style="width:52px;height:52px;border-radius:11px;overflow:hidden;background:#DCEFEB;border:1px solid #CFE7E2"><img src="assets/image-3-1.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:56% 46%"></div>
         <span style="position:absolute;top:-7px;left:-7px;width:24px;height:24px;border-radius:7px;background:#3E8F86;color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(62,143,134,.35)">①</span>
@@ -116,7 +104,7 @@
           <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:18px;color:#242926">1号館</span>
           <span style="font-size:11px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 9px;border-radius:999px;white-space:nowrap">ピュアット① 特浴・個浴</span>
         </div>
-        <div class="bldsub" style="font-size:11.5px;color:#737974;margin-top:2px">1階：華・柔・逢(SS)　／　2階：明・昴・智・縁　—　特浴／個浴でピュアットを活用</div>
+        <div style="font-size:11.5px;color:#737974;margin-top:2px">1階：華・柔・逢(SS)　／　2階：明・昴・智・縁　—　特浴／個浴でピュアットを活用</div>
       </div>
     </div>
 
@@ -125,7 +113,7 @@
       <div style="display:grid;grid-template-columns:88px repeat(7,1fr);gap:6px">
         <div></div>
         <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
-          <div class="dhdr" style="text-align:center;padding:6px 0;border-radius:9px;background:{{ d.hdrBg }};border:{{ d.hdrBorder }}">
+          <div style="text-align:center;padding:6px 0;border-radius:9px;background:{{ d.hdrBg }};border:{{ d.hdrBorder }}">
             <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:{{ d.wWeight }};font-size:14px;color:{{ d.wColor }}">{{ d.wLabel }}</div>
             <div style="font-size:10px;color:#8a908b">{{ d.dLabel }}</div>
           </div>
@@ -133,15 +121,23 @@
       </div>
       <sc-for list="{{ zone1Rows }}" as="row" hint-placeholder-count="12">
         <div style="display:grid;grid-template-columns:88px repeat(7,1fr);gap:6px;align-items:stretch">
-          <div class="rlabel" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 6px;border-left:4px solid {{ row.barColor }};background:{{ row.labelBg }};border-radius:7px">
+          <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 6px;border-left:4px solid {{ row.barColor }};background:{{ row.labelBg }};border-radius:7px">
             <span style="font-size:10px;color:#8a908b;font-weight:500">{{ row.slot }}</span>
             <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:11.5px;color:{{ row.tagColor }};line-height:1.25;white-space:nowrap">{{ row.tag }}</span>
           </div>
           <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="7">
-            <div class="prow" style="border-radius:9px;padding:4px;background:{{ cell.bg }};border:{{ cell.border }};display:flex;flex-direction:column;gap:3px;min-height:30px;justify-content:center">
-              <sc-for list="{{ cell.chips }}" as="ch" hint-placeholder-count="1">
-                <span style="font-size:10.5px;font-weight:700;color:{{ ch.color }};background:{{ ch.bg }};border:{{ ch.border }};border-radius:6px;padding:2px 7px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ch.label }}</span>
-              </sc-for>
+            <div style="border-radius:9px;padding:5px;background:{{ cell.bg }};border:{{ cell.border }};display:flex;flex-direction:column;gap:4px">
+              <select class="uw" value="{{ cell.value }}" onChange="{{ cell.onChange }}" style="color:{{ cell.color }};font-weight:{{ cell.weight }}">
+                <sc-for list="{{ cell.options }}" as="opt" hint-placeholder-count="4"><option value="{{ opt.id }}">{{ opt.name }}</option></sc-for>
+              </select>
+              <sc-if value="{{ cell.show }}" hint-placeholder-val="{{ false }}">
+                <select class="uw ut" value="{{ cell.tVal }}" onChange="{{ cell.tOnChange }}" style="color:{{ cell.tColor }};font-weight:700">
+                  <sc-for list="{{ cell.tOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
+                </select>
+                <sc-if value="{{ cell.conflict }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:9px;font-weight:700;color:#C0392B;text-align:center;line-height:1.2">{{ cell.conflictLabel }}</span>
+                </sc-if>
+              </sc-if>
             </div>
           </sc-for>
         </div>
@@ -151,8 +147,8 @@
   </div>
 
   <!-- ZONE 2 : 2号館 -->
-  <div class="bldcard" style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
-    <div class="bldhead" style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
+  <div class="bldcard pagebreak" style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+    <div style="display:flex;align-items:center;gap:13px;margin-bottom:13px">
       <div style="position:relative;flex-shrink:0">
         <div style="width:52px;height:52px;border-radius:11px;overflow:hidden;background:#E1EAF0;border:1px solid #D3E2EB"><img src="assets/image-3-1.jpeg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:56% 46%"></div>
         <span style="position:absolute;top:-7px;left:-7px;width:24px;height:24px;border-radius:7px;background:#5588A6;color:#fff;font-weight:900;font-size:13px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(85,136,166,.35)">②</span>
@@ -163,7 +159,7 @@
           <span style="font-size:11px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 9px;border-radius:999px;white-space:nowrap">ピュアット② 個浴</span>
           <span style="font-size:11px;font-weight:700;color:#8a908b;background:#F1EFE8;padding:3px 9px;border-radius:999px;white-space:nowrap">シャワートロリー併用</span>
         </div>
-        <div class="bldsub" style="font-size:11.5px;color:#737974;margin-top:2px">1階：唐崎・帰帆・夕照　／　2階：晴嵐・暮雪・晩鐘・秋月　—　皮膚脆弱な方は毎回かならず掻痒を確認</div>
+        <div style="font-size:11.5px;color:#737974;margin-top:2px">1階：唐崎・帰帆・夕照　／　2階：晴嵐・暮雪・晩鐘・秋月　—　皮膚脆弱な方は毎回かならず掻痒を確認</div>
       </div>
     </div>
 
@@ -172,7 +168,7 @@
       <div style="display:grid;grid-template-columns:88px repeat(7,1fr);gap:6px">
         <div></div>
         <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
-          <div class="dhdr" style="text-align:center;padding:6px 0;border-radius:9px;background:{{ d.hdrBg2 }};border:{{ d.hdrBorder2 }}">
+          <div style="text-align:center;padding:6px 0;border-radius:9px;background:{{ d.hdrBg2 }};border:{{ d.hdrBorder2 }}">
             <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:{{ d.wWeight }};font-size:14px;color:{{ d.wColor }}">{{ d.wLabel }}</div>
             <div style="font-size:10px;color:#8a908b">{{ d.dLabel }}</div>
           </div>
@@ -180,15 +176,23 @@
       </div>
       <sc-for list="{{ zone2Rows }}" as="row" hint-placeholder-count="12">
         <div style="display:grid;grid-template-columns:88px repeat(7,1fr);gap:6px;align-items:stretch">
-          <div class="rlabel" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 6px;border-left:4px solid {{ row.barColor }};background:{{ row.labelBg }};border-radius:7px">
+          <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 6px;border-left:4px solid {{ row.barColor }};background:{{ row.labelBg }};border-radius:7px">
             <span style="font-size:10px;color:#8a908b;font-weight:500">{{ row.slot }}</span>
             <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:11.5px;color:{{ row.tagColor }};line-height:1.25;white-space:nowrap">{{ row.tag }}</span>
           </div>
           <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="7">
-            <div class="prow" style="border-radius:9px;padding:4px;background:{{ cell.bg }};border:{{ cell.border }};display:flex;flex-direction:column;gap:3px;min-height:30px;justify-content:center">
-              <sc-for list="{{ cell.chips }}" as="ch" hint-placeholder-count="1">
-                <span style="font-size:10.5px;font-weight:700;color:{{ ch.color }};background:{{ ch.bg }};border:{{ ch.border }};border-radius:6px;padding:2px 7px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ch.label }}</span>
-              </sc-for>
+            <div style="border-radius:9px;padding:5px;background:{{ cell.bg }};border:{{ cell.border }};display:flex;flex-direction:column;gap:4px">
+              <select class="uw" value="{{ cell.value }}" onChange="{{ cell.onChange }}" style="color:{{ cell.color }};font-weight:{{ cell.weight }}">
+                <sc-for list="{{ cell.options }}" as="opt" hint-placeholder-count="4"><option value="{{ opt.id }}">{{ opt.name }}</option></sc-for>
+              </select>
+              <sc-if value="{{ cell.show }}" hint-placeholder-val="{{ false }}">
+                <select class="uw ut" value="{{ cell.tVal }}" onChange="{{ cell.tOnChange }}" style="color:{{ cell.tColor }};font-weight:700">
+                  <sc-for list="{{ cell.tOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
+                </select>
+                <sc-if value="{{ cell.conflict }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:9px;font-weight:700;color:#C0392B;text-align:center;line-height:1.2">{{ cell.conflictLabel }}</span>
+                </sc-if>
+              </sc-if>
             </div>
           </sc-for>
         </div>
@@ -199,20 +203,20 @@
 
   <!-- SKINCARE LINK BAND -->
   <div class="noprint" style="display:flex;gap:14px;flex-wrap:wrap;align-items:stretch">
-    <a href="スキンケア記録.dc.html" style="flex:2;min-width:340px;background:#2E6B64;border-radius:14px;padding:15px 17px;color:#eafaf7;display:flex;gap:14px;align-items:center;box-shadow:0 3px 12px rgba(46,107,100,.2);text-decoration:none">
-      <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🩹</span>
+    <div style="flex:2;min-width:340px;background:#2E6B64;border-radius:14px;padding:15px 17px;color:#eafaf7;display:flex;gap:14px;align-items:center;box-shadow:0 3px 12px rgba(46,107,100,.2)">
+      <span style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">📱</span>
       <div style="flex:1">
-        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14.5px;color:#fff">スキンケア記録アプリを開く</div>
-        <div style="font-size:11.5px;color:#c3e3de;line-height:1.5;margin-top:2px">入浴後・着衣前に肌チェック（発赤・乾燥・掻痒・表皮剥離ほか）を入居者ごとに記録。<b style="color:#fff">皮膚状態の変化に気づける</b>よう、毎月のユニット会議で振り返ります。</div>
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14.5px;color:#fff">スキンケアアプリ連携</div>
+        <div style="font-size:11.5px;color:#c3e3de;line-height:1.5;margin-top:2px">入浴後・着衣前に肌チェック（発赤・乾燥・掻痒・表皮剥離）をアプリへ記録。<b style="color:#fff">皮膚状態の変化に週次で気づける</b>よう、毎月のユニット会議で振り返ります。</div>
       </div>
-      <div style="text-align:center;flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:5px">
-        <span style="width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:20px;color:#fff">→</span>
-        <div style="font-size:9.5px;color:#a9d6cf">記録をつける</div>
+      <div style="text-align:center;flex-shrink:0">
+        <div style="width:58px;height:58px;border-radius:10px;overflow:hidden;background:#fff;padding:3px"><img src="assets/skincare-qr.png" alt="皮膚アプリ QR" style="width:100%;height:100%;object-fit:contain;display:block"></div>
+        <div style="font-size:9px;color:#a9d6cf;margin-top:3px">アプリを開く</div>
       </div>
-    </a>
+    </div>
   </div>
 
-  <div class="noprint" style="text-align:center;font-size:10.5px;color:#a0a59f;margin-top:18px">えんゆうの郷　ピュアット週間入浴予定表　／　特許第6353936号 ウルトラファインバブル洗身　／　各ユニットの週間予定表で選択した浴種（ピュ特浴・ピュ個浴・特浴・シャワートロリー）を自動で反映します</div>
+  <div class="noprint" style="text-align:center;font-size:10.5px;color:#a0a59f;margin-top:18px">えんゆうの郷　ピュアット週間入浴予定表　／　特許第6353936号 ウルトラファインバブル洗身　／　各枠のプルダウンでユニットを選択できます</div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{}">
@@ -232,22 +236,8 @@ class Component extends DCLogic {
     this.MAX_WEEKS = 8; // 2ヶ月先まで
     this.state = { assign: {}, weekOffset: 0, now: Date.now() };
   }
-  componentDidMount(){ this.loadWeek(0); this._t = setInterval(() => this.setState({ now: Date.now() }), 60000); this.setupPrint(); this._sync = () => this.forceUpdate(); window.addEventListener('puatto-synced', this._sync); }
-  componentWillUnmount(){ clearInterval(this._t); this.teardownPrint(); window.removeEventListener('puatto-synced', this._sync); }
-  setupPrint(){
-    this._before = () => {
-      const w = document.querySelector('.app-wrap'); if(!w) return;
-      w.classList.add('printmode'); w.style.zoom = '';
-      void w.offsetHeight;
-      const usableH = 200/25.4*96 * 0.96; // A4 landscape usable height with safety margin
-      const z = Math.min(1, usableH / w.scrollHeight);
-      w.style.zoom = z.toFixed(3);
-    };
-    this._after = () => { const w = document.querySelector('.app-wrap'); if(w){ w.classList.remove('printmode'); w.style.zoom=''; } };
-    window.addEventListener('beforeprint', this._before);
-    window.addEventListener('afterprint', this._after);
-  }
-  teardownPrint(){ window.removeEventListener('beforeprint', this._before); window.removeEventListener('afterprint', this._after); }
+  componentDidMount(){ this.loadWeek(0); this._t = setInterval(() => this.setState({ now: Date.now() }), 60000); }
+  componentWillUnmount(){ clearInterval(this._t); }
 
   mondayISO(off){
     const now = new Date(this.state.now);
@@ -329,12 +319,13 @@ class Component extends DCLogic {
     const weekLabel = '令和'+eraY+'年 '+(monday.getMonth()+1)+'月'+monday.getDate()+'日 – '+(last.getMonth()+1)+'月'+last.getDate()+'日';
     const todayLabel = WD[(now.getDay()+6)%7] + '曜';
 
-    // ---- palette live counts (各ユニット予定表の入力コマ数) ----
+    // ---- palette with live counts ----
     const counts = {};
-    UNITS.forEach(u => {
-      const a = this.loadUnit(u.id);
-      let n = 0; Object.keys(a).forEach(k => { const c = a[k]; if (c && c.t) n++; });
-      counts[u.id] = n;
+    Object.values(this.state.assign).forEach(cell => {
+      const v = cell && cell.u;
+      if(!v) return;
+      if(pairById[v]) pairById[v].members.forEach(m => counts[m] = (counts[m]||0)+1);
+      else counts[v] = (counts[v]||0)+1;
     });
     const grpMeta = {
       '1号館 1階': { color:TEAL,  bg:'#F1F7F6', border:'#DCEBE8', badgeBg:'#E4F1EE', badgeColor:TEAL },
@@ -350,72 +341,78 @@ class Component extends DCLogic {
       }))};
     });
 
-    // ---- 浴種→ゾーン反映（各ユニット予定表の選択を週間予定表へ集約）----
-    const TNAME = { pt:'ピュ特浴', pk:'ピュ個浴', t:'特浴', sh:'シャワートロリー' };
+    // ---- 浴種 options per building ----
+    const TYPES_1 = [ {id:'',name:'浴種'},{id:'pt',name:'ピュ特浴'},{id:'pk',name:'ピュ個浴'},{id:'t',name:'特浴'},{id:'k',name:'個浴'} ];
+    const TYPES_2 = [ {id:'',name:'浴種'},{id:'k',name:'個浴'},{id:'pk',name:'ピュ個浴'},{id:'sh',name:'シャワートロリー'},{id:'t',name:'特浴(1号館)'},{id:'pt',name:'ピュ特浴(1号館)'} ];
     // 共有設備：特浴系(t/pt)は1号館の1台を全館共用→全館横断。pk/shは建物ごと。
     const deviceScope = (tid, bld) => {
       if (tid === 'pt' || tid === 't') return 'G::' + tid;
       if (tid === 'pk' || tid === 'sh') return 'B' + bld + '::' + tid;
       return null;
     };
-    // どのゾーン（号館）へ反映するか。特浴系は1号館の機器→z1、シャワーは2号館→z2、ピュ個浴は建物ごと。個浴(k)は反映しない。
-    const zoneOf = (tid, bld) => {
-      if (tid === 'pt' || tid === 't') return 'z1';
-      if (tid === 'sh') return 'z2';
-      if (tid === 'pk') return bld === 2 ? 'z2' : 'z1';
-      return null;
-    };
-    const reflect = { z1:{}, z2:{} };
-    const scopeCount = {};
+    const membersOf = (uid) => pairById[uid] ? pairById[uid].members : (uid ? [uid] : []);
+
+    // ---- shared-device sets (ユニットページの計画を集約) : scopeKey -> Set of unit ids ----
+    const puattoScope = {};
     UNITS.forEach(u => {
       const bld = u.grp.startsWith('2号館') ? 2 : 1;
       const a = this.loadUnit(u.id);
       Object.keys(a).forEach(k => {
-        const c = a[k]; if (!c || typeof c !== 'object') return;
-        const t = c.t; const zone = zoneOf(t, bld); if (!zone) return;
-        const token = k.slice(u.id.length + 1);
-        const skey = token + '|' + deviceScope(t, bld);
-        scopeCount[skey] = (scopeCount[skey] || 0) + 1;
-        (reflect[zone][token] = reflect[zone][token] || []).push({ disp:u.disp, tId:t, skey });
+        const c = a[k];
+        if (!c || typeof c !== 'object') return;
+        const sc = deviceScope(c.t, bld);
+        if (!sc) return;
+        const bucket = k.slice(u.id.length + 1) + '|' + sc;
+        (puattoScope[bucket] = puattoScope[bucket] || new Set()).add(u.id);
       });
     });
 
-    // ---- row/cell builder（読み取り専用：ユニットの計画をそのまま表示）----
-    const buildZone = (zoneKey, accent, tintStrong) => (rowdef) => rowdef.map(r => {
-      let barColor, tagColor, labelBg;
-      if (r.tone === 'strong')    { barColor=accent;    tagColor=accent;    labelBg=tintStrong; }
-      else if (r.tone === 'soft') { barColor=accent;    tagColor=accent;    labelBg='#FAF9F5'; }
-      else                        { barColor='#D8D4C8'; tagColor='#8a908b'; labelBg='#FBFAF7'; }
-      const teal = zoneKey === 'z1';
+    // ---- row/cell builder ----
+    const buildZone = (zid, bld, opts, types, accent, tintStrong) => (rowdef) => rowdef.map(r => {
+      let barColor, tagColor, labelBg, cellAccent, wrapBg;
+      if (r.tone === 'strong')      { barColor=accent;   tagColor=accent;   labelBg=tintStrong; cellAccent=accent;   wrapBg=tintStrong; }
+      else if (r.tone === 'soft')   { barColor=accent;   tagColor=accent;   labelBg='#FAF9F5';  cellAccent=accent;   wrapBg='#FCFBF8'; }
+      else                          { barColor='#D8D4C8';tagColor='#8a908b';labelBg='#FBFAF7';  cellAccent='#5b615d';wrapBg='transparent'; }
       return {
         slot: r.slot, tag: r.tag, barColor, tagColor, labelBg,
         cells: DK.map(dk => {
-          const token = r.id + '-' + dk;
-          const list = (reflect[zoneKey][token] || []).slice()
-            .sort((a,b)=> a.tId.localeCompare(b.tId) || a.disp.localeCompare(b.disp,'ja'));
-          const chips = list.map(e => {
-            const conflict = scopeCount[e.skey] > 1;
-            return {
-              label: e.disp + '　' + TNAME[e.tId],
-              conflict,
-              bg: conflict ? '#FBE9E5' : (teal ? '#EAF3F1' : '#EEF3F7'),
-              color: conflict ? '#C0392B' : (teal ? '#2E6B64' : '#3f7492'),
-              border: conflict ? '1px solid #E4A99B' : '1px solid transparent',
-            };
-          });
-          const anyConflict = chips.some(c => c.conflict);
-          const hasAny = chips.length > 0;
+          const key = zid+'-'+r.id+'-'+dk;
+          const token = r.id+'-'+dk;
+          const cell = this.state.assign[key] || {};
+          const uVal = cell.u || '';
+          const tVal = cell.t || '';
+          const hasU = !!uVal;
+          const sc = deviceScope(tVal, bld);
+          const isPu = !!sc;
+          // distinct units on the same shared device at this slot/day (unit-page plans + this cell)
+          const bucket = token + '|' + sc;
+          const set = new Set(puattoScope[bucket] ? [...puattoScope[bucket]] : []);
+          if (isPu && hasU) membersOf(uVal).forEach(m => set.add(m));
+          const conflict = isPu && set.size > 1;
+          const conflictLabel = tVal === 'sh' ? '⚠ シャワートロリー重複'
+            : (tVal === 't' ? '⚠ 特浴重複' : '⚠ ピュアット重複');
           let bg, border;
-          if (anyConflict) { bg = '#FDF0EC'; border = '1.5px solid #E0654F'; }
-          else if (hasAny) { bg = r.tone==='strong' ? tintStrong : '#FCFBF8'; border = '1px solid transparent'; }
+          if (conflict) { bg = '#FBE9E5'; border = '1.5px solid #E0654F'; }
+          else if (hasU) { bg = wrapBg==='transparent' ? '#FCFBF8' : wrapBg; border = '1px solid transparent'; }
           else { bg = 'transparent'; border = '1px solid transparent'; }
-          return { chips, hasAny, bg, border };
+          return {
+            value: uVal,
+            onChange: (e) => this.setField(key, { u: e.target.value }),
+            options: opts,
+            color: uVal ? cellAccent : '#c2c6c0',
+            weight: uVal ? '700' : '400',
+            show: hasU,
+            tVal, tOptions: types,
+            tOnChange: (e) => this.setField(key, { t: e.target.value }),
+            tColor: conflict ? '#C0392B' : (tVal ? accent : '#b0b4ad'),
+            conflict, bg, border, conflictLabel,
+          };
         }),
       };
     });
 
-    const z1 = buildZone('z1', TEAL, '#EAF4F2');
-    const z2 = buildZone('z2', BLUE, '#EAF0F5');
+    const z1 = buildZone('z1', 1, optsZ1, TYPES_1, TEAL, '#EAF4F2');
+    const z2 = buildZone('z2', 2, optsZ2, TYPES_2, BLUE, '#EAF0F5');
 
     // ---- 30分枠（午前 9:30–12:30 / 午後 13:00–16:00）----
     const makeSlots = (period, startH, startM, count) => {
