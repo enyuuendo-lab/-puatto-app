@@ -2,14 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="入浴予定">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#3E8F86">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -39,7 +32,7 @@
       <div style="display:flex;flex-direction:column;gap:14px">
         <div>
           <label style="display:block;font-size:12px;font-weight:700;color:#6b716c;margin-bottom:6px">職員ID</label>
-          <input class="lf" value="{{ idVal }}" onInput="{{ onId }}" placeholder="例：nagisa01" autocomplete="username">
+          <input class="lf" value="{{ idVal }}" onInput="{{ onId }}" placeholder="例：えんゆう" autocomplete="username">
         </div>
         <div>
           <label style="display:block;font-size:12px;font-weight:700;color:#6b716c;margin-bottom:6px">パスワード</label>
@@ -58,10 +51,6 @@
         <button onClick="{{ onLogin }}" style="margin-top:6px;width:100%;border:none;border-radius:12px;padding:14px;background:#3E8F86;color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15.5px;cursor:pointer;box-shadow:0 6px 16px rgba(62,143,134,.28)" style-hover="background:#357c74">ログイン</button>
       </div>
 
-      <div style="margin-top:16px;padding-top:15px;border-top:1px solid #EFEDE5;font-size:11.5px;color:#a0a59f;line-height:1.6">
-        デモ用ID：<b style="color:#6b716c">nagisa</b> ／ パスワード：<b style="color:#6b716c">1234</b><br>
-        記録は各端末に保存され、iPad・PCどちらからでも同じ手順で更新できます。
-      </div>
     </div>
 
     <div style="text-align:center;font-size:10.5px;color:#a8ada6;margin-top:20px">特許第6353936号 ウルトラファインバブル洗身　／　© えんゆうの郷</div>
@@ -76,11 +65,11 @@ class Component extends DCLogic {
   onRemember = (e) => this.setState({ remember: e.target.checked });
   onKey = (e) => { if (e.key === 'Enter') this.login(); };
   login(){
-    const id = (this.state.idVal || '').trim().toLowerCase();
+    const id = (this.state.idVal || '').trim();
     const pw = (this.state.pwVal || '').trim();
     if (!id || !pw) { this.setState({ error:true, errorMsg:'職員IDとパスワードを入力してください。' }); return; }
     // prototype auth
-    if (!(id === 'nagisa' && pw === '1234') && pw.length < 4) {
+    if (!(id === 'えんゆう' && pw === '1234')) {
       this.setState({ error:true, errorMsg:'IDまたはパスワードが正しくありません。' }); return;
     }
     try {
