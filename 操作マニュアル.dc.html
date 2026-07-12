@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+  a { color:#2E6B64; } a:hover { color:#21514c; }
+  doc-page:not(:defined){ visibility:hidden; }
+  @media print { .toolbar { display:none !important; } }
+</style>
+</helmet>
+
+<div class="toolbar" style="width:210mm;max-width:94vw;margin:16px auto 10px;display:flex;justify-content:space-between;align-items:center;gap:12px">
+  <a href="ピュアット週間予定表.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6b716c;text-decoration:none">← 週間入浴予定表へもどる</a>
+  <button onClick="{{ onPrint }}" style="font-size:11.5px;color:#3E8F86;font-weight:700;padding:8px 12px;border:1px solid #DCEBE8;background:#EAF3F1;border-radius:10px;white-space:nowrap;cursor:pointer">🖨 印刷 / PDF保存</button>
+</div>
+
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" size="a4" margin="15mm" hint-size="210mm,297mm">
+
+  <!-- COVER / INTRO -->
+  <div style="display:flex;align-items:center;gap:9px;color:#3E8F86;font-size:12px;font-weight:700;letter-spacing:.04em">
+    <span style="width:9px;height:9px;border-radius:2px;background:#3E8F86;display:inline-block"></span>
+    社会福祉法人 誠光福祉会　えんゆうの郷
+  </div>
+  <h1 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:30px;letter-spacing:.01em;margin:8px 0 4px;color:#242926">ピュアット週間予定表<br>操作マニュアル</h1>
+  <p style="font-size:14px;line-height:1.8;color:#4a504c;margin:10px 0 0">
+    このマニュアルは、ピュアット（ウルトラファインバブル洗身機）2台を1号館・2号館で運用しながら、
+    ご入居者の週間入浴予定を作成・共有するための手引きです。主担当が全体の枠組みを組み、
+    各ユニットが入居者と担当職員を割り当てる、という2段階で予定表を仕上げます。
+  </p>
+
+  <div style="display:flex;gap:12px;margin:18px 0 4px;flex-wrap:wrap">
+    <div style="flex:1;min-width:220px;background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:13px 15px">
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;color:#2E6B64">1号館　ピュアット①</div>
+      <div style="font-size:12.5px;line-height:1.7;color:#4a504c;margin-top:3px">特浴・個浴でピュアットを活用。<br>1階：華・柔・逢(SS)／2階：明・昴・智・縁</div>
+    </div>
+    <div style="flex:1;min-width:220px;background:#F1F5F8;border:1px solid #DEE9F0;border-radius:12px;padding:13px 15px">
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;color:#4d7f9c">2号館　ピュアット②</div>
+      <div style="font-size:12.5px;line-height:1.7;color:#4a504c;margin-top:3px">個浴で活用＋シャワートロリー併用。<br>1階：唐崎・帰帆・夕照／2階：晴嵐・暮雪・晩鐘・秋月</div>
+    </div>
+  </div>
+
+  <!-- SCREEN FLOW -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:26px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">画面の流れ</h2>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <div style="display:flex;align-items:flex-start;gap:12px;background:#FBFAF7;border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <span style="width:26px;height:26px;border-radius:8px;background:#3E8F86;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</span>
+      <div><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">ログイン</span><div style="font-size:12.5px;color:#5a605c;margin-top:2px;line-height:1.6">職員ID・パスワードで入室します。</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px;background:#FBFAF7;border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <span style="width:26px;height:26px;border-radius:8px;background:#3E8F86;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</span>
+      <div><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">週間入浴予定表</span><div style="font-size:12.5px;color:#5a605c;margin-top:2px;line-height:1.6">各ユニットが選んだ浴種を号館ごとに自動集約し、2台の稼働を俯瞰します。ここでの手入力は不要です。</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px;background:#FBFAF7;border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <span style="width:26px;height:26px;border-radius:8px;background:#5588A6;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</span>
+      <div><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">ユニット週間予定表</span><div style="font-size:12.5px;color:#5a605c;margin-top:2px;line-height:1.6">各ユニットがご入居者・浴種・担当職員を記入。ここでの浴種が週間入浴予定表へ自動反映されます。</div></div>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:12px;background:#FBFAF7;border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <span style="width:26px;height:26px;border-radius:8px;background:#5588A6;color:#fff;font-weight:900;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</span>
+      <div><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926">運用ダッシュボード</span><div style="font-size:12.5px;color:#5a605c;margin-top:2px;line-height:1.6">実施状況の記録・共有に使います。</div></div>
+    </div>
+  </div>
+
+  <!-- 1. LOGIN -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">① ログイン</h2>
+  <p style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0">
+    最初の画面で<b>職員ID</b>と<b>パスワード</b>を入力し、「ログイン」を押します。
+    入力に誤りがあるときは赤いメッセージが表示されますので、確認のうえ再入力してください。
+  </p>
+
+  <!-- 2. WEEKLY -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">② 週間入浴予定表（全体を俯瞰する）</h2>
+  <p style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0 0 14px">
+    1号館・2号館それぞれの時間枠に、各ユニットが選んだ浴種を<b>自動で集約して表示</b>する画面です。2台のピュアットが週内でどう動くかをここで俯瞰します。この画面での手入力はありません。
+  </p>
+
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:14px 16px;margin:0 0 16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <span style="width:22px;height:22px;border-radius:7px;background:#3E8F86;color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center">↻</span>
+      <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#2E6B64">浴種は自動で反映されます</span>
+    </div>
+    <p style="font-size:13px;line-height:1.8;color:#3a4c48;margin:0">
+      各ユニットの週間予定表で選んだ<b>ピュ特浴・ピュ個浴・特浴・シャワートロリー</b>が、該当する号館・時間帯・曜日の枠へ「ユニット名＋浴種」として自動的に表示されます（機器を使わない<b>個浴は反映されません</b>）。
+      特浴系は1号館の機器へ、シャワートロリーは2号館へ、ピュ個浴は建物ごとに振り分けられます。
+    </p>
+  </div>
+
+  <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#2E6B64;margin:0 0 8px">見かた</h3>
+  <ul style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0 0 16px;padding-left:22px">
+    <li>枠には、その時間帯にその機器を使うユニットが<b>色付きのラベル</b>で並びます。</li>
+    <li>予定を直したいときは、<b>各ユニットの週間予定表</b>を開いて浴種を変更してください。変更はすぐに反映されます。</li>
+    <li>表の下部の<b>対応職員 集計</b>で、職員ごとの担当コマ数を確認できます。</li>
+  </ul>
+
+  <h3 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#2E6B64;margin:0 0 8px">浴種と担当職員数</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;margin:0 0 8px">
+    <thead>
+      <tr style="background:#F1F7F6;color:#5a605c;text-align:left">
+        <th style="padding:8px 12px;border:1px solid #E4EDE9;font-weight:700">浴種</th>
+        <th style="padding:8px 12px;border:1px solid #E4EDE9;font-weight:700;text-align:center">ピュアット</th>
+        <th style="padding:8px 12px;border:1px solid #E4EDE9;font-weight:700;text-align:center">担当職員</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td style="padding:7px 12px;border:1px solid #EEF1EC;font-weight:700">ピュ特浴</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;color:#2E6B64">●</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;font-weight:700">2名</td></tr>
+      <tr><td style="padding:7px 12px;border:1px solid #EEF1EC;font-weight:700">ピュ個浴</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;color:#2E6B64">●</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;font-weight:700">1名</td></tr>
+      <tr><td style="padding:7px 12px;border:1px solid #EEF1EC;font-weight:700">特浴</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;color:#c2c6c0">—</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;font-weight:700">2名</td></tr>
+      <tr><td style="padding:7px 12px;border:1px solid #EEF1EC;font-weight:700">個浴</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;color:#c2c6c0">—</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;font-weight:700">1名</td></tr>
+      <tr><td style="padding:7px 12px;border:1px solid #EEF1EC;font-weight:700">シャワートロリー</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;color:#c2c6c0">—</td><td style="padding:7px 12px;border:1px solid #EEF1EC;text-align:center;font-weight:700">1名</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;line-height:1.7;color:#737974;margin:0 0 16px">
+    ※ 特浴系（特浴・ピュ特浴）は1号館の1台を全館で共用します。ピュ個浴・シャワートロリーは建物ごとに1台です。
+  </p>
+
+  <div style="background:#FBE9E5;border:1px solid #F1CFC7;border-radius:12px;padding:14px 16px;margin:0 0 4px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <span style="color:#C0392B;font-size:14px">■</span>
+      <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#a5402b">重複警告（赤色表示）について</span>
+    </div>
+    <p style="font-size:13px;line-height:1.8;color:#7a4636;margin:0">
+      同一浴種のピュアット、またはシャワートロリーが<b>同じ時間帯に重なる</b>と、その枠が赤くなり「⚠ ○○重複」と表示されます。
+      1台の機器を同時に使うことはできませんので、時間帯や曜日をずらして解消してください。
+    </p>
+  </div>
+
+  <!-- 3. UNIT -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #5588A6">③ ユニット週間予定表（詳細を入れる）</h2>
+  <p style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0 0 14px">
+    各ユニットで、枠ごとに<b>ご入居者・浴種・担当職員</b>を記入する画面です。上部の切替から、全14ユニットを行き来できます。
+  </p>
+  <ul style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0 0 16px;padding-left:22px">
+    <li>ご入居者一覧には<b>週の入浴回数</b>が表示されます。週2回以上を目安に、未満の方は赤で知らせます。</li>
+    <li>担当職員は<b>個浴1名／特浴2名</b>を記入します。浴種を選ぶと必要な人数の入力欄が出ます。</li>
+    <li>号館内で同一浴種のピュアット／シャワートロリーが重なると、こちらでも赤色で警告します。</li>
+  </ul>
+
+  <div style="background:#F1F5F8;border:1px solid #DEE9F0;border-radius:12px;padding:14px 16px;margin:0">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+      <span style="width:22px;height:22px;border-radius:7px;background:#5588A6;color:#fff;font-weight:900;font-size:12px;display:flex;align-items:center;justify-content:center">集</span>
+      <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a5a6e">対応職員 月次集計</span>
+    </div>
+    <p style="font-size:13px;line-height:1.8;color:#3a4c56;margin:0">
+      予定表の下に、そのユニットの<b>当月分の担当コマ数</b>を職員ごとに自動集計して表示します（個浴＝1名・特浴＝2名を1コマとして加算）。
+      週をまたいでも同じ月であれば合算され、<b>ピュアット担当のコマ数</b>も内訳として確認できます。担当の偏りを月単位でひと目で把握できます。
+    </p>
+  </div>
+
+  <!-- 4. DASHBOARD -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #5588A6">④ 運用ダッシュボード</h2>
+  <p style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0">
+    その日の入浴の実施状況を記録・共有するための画面です。対象人数・介助職員数・留意事項などをまとめて確認できます。
+  </p>
+
+  <!-- WEEK SWITCH & PRINT -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">週の切替と印刷</h2>
+  <ul style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0 0 14px;padding-left:22px">
+    <li>画面上部の <b>◀ ▶</b> で、今週から最大8週先（約2か月先）まで切り替えられます。</li>
+    <li><b>「今週へ」</b>を押すと当週に戻ります。</li>
+    <li><b>「🖨 印刷」</b>を押すと、表示中の週がそのまま印刷できます。</li>
+  </ul>
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:14px 16px">
+    <p style="font-size:13px;line-height:1.8;color:#3a4c48;margin:0">
+      <b style="color:#2E6B64">印刷は1枚に収まります。</b>　週間入浴予定表（1号館・2号館）とユニット週間予定表は、いずれも<b>A4横・1枚</b>で出力されるよう自動で調整されます。
+      枠が多く埋まっている週も、1枚に収まるように全体の大きさが自動調整されます。
+    </p>
+  </div>
+
+  <!-- SKINCARE -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">スキンケアアプリ連携</h2>
+  <p style="font-size:13.5px;line-height:1.85;color:#3a403c;margin:0">
+    入浴後・着衣前に、肌チェック（発赤・乾燥・掻痒・表皮剥離）をアプリへ記録します。
+    皮膚状態の変化に週次で気づけるよう、毎月のユニット会議で振り返りを行います。皮膚が脆弱な方は毎回かならず掻痒を確認してください。
+  </p>
+
+  <!-- FAQ -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:19px;color:#242926;margin:28px 0 12px;padding-bottom:7px;border-bottom:2px solid #3E8F86">困ったときは</h2>
+  <div style="display:flex;flex-direction:column;gap:10px">
+    <div style="border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <div style="font-weight:700;font-size:13.5px;color:#242926">Q. 入力が消えてしまわないか心配です。</div>
+      <div style="font-size:13px;line-height:1.7;color:#5a605c;margin-top:3px">A. 入力はその場で自動保存されます。保存操作は不要です。</div>
+    </div>
+    <div style="border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <div style="font-weight:700;font-size:13.5px;color:#242926">Q. 赤い枠（重複警告）が消えません。</div>
+      <div style="font-size:13px;line-height:1.7;color:#5a605c;margin-top:3px">A. 同じ機器が同じ時間帯で重なっています。どちらかの時間帯・曜日をずらしてください。</div>
+    </div>
+    <div style="border:1px solid #EDEBE3;border-radius:10px;padding:12px 14px">
+      <div style="font-weight:700;font-size:13.5px;color:#242926">Q. 対応職員の集計はどこで見られますか。</div>
+      <div style="font-size:13px;line-height:1.7;color:#5a605c;margin-top:3px">A. 各ユニットの週間予定表の下部に、当月分がまとめて表示されます。</div>
+    </div>
+  </div>
+
+  <div style="margin-top:30px;padding-top:12px;border-top:1px solid #EDEBE3;display:flex;justify-content:space-between;align-items:center;font-size:10.5px;color:#a0a59f">
+    <span>特許第6353936号　ウルトラファインバブル洗身</span>
+    <span>ver.1.0　令和8年7月改定</span>
+  </div>
+
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    return { onPrint: () => { try { window.print(); } catch(e){} } };
+  }
+}
+</script>
+</body>
+</html>

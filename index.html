@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="入浴予定">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#3E8F86">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<title>ピュアット週間入浴管理</title>
+<style>
+  html,body{height:100%;margin:0}
+  body{background:#3E8F86;color:#fff;font-family:-apple-system,"Noto Sans JP",sans-serif;
+       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+  .g{width:96px;height:96px;border-radius:26px;background:rgba(255,255,255,.14);
+     display:flex;align-items:center;justify-content:center;font-weight:900;font-size:52px}
+  .t{font-size:15px;letter-spacing:.04em;opacity:.9}
+  a{color:#fff}
+  .sp{width:26px;height:26px;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;
+      border-radius:50%;animation:s 1s linear infinite}
+  @keyframes s{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+  <div class="g">湯</div>
+  <div class="t">ピュアット週間入浴管理</div>
+  <div class="sp"></div>
+  <noscript><a href="ログイン.dc.html">ログイン画面へ</a></noscript>
+<script>
+  location.replace(encodeURI('ログイン.dc.html'));
+</script>
+</body>
+</html>

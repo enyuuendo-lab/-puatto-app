@@ -1,0 +1,16 @@
+{
+  "name": "ピュアット週間入浴管理",
+  "short_name": "入浴予定",
+  "description": "えんゆうの郷 入浴・スキンケア記録システム",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#EDEBE3",
+  "theme_color": "#3E8F86",
+  "lang": "ja",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

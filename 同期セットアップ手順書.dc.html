@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+  doc-page:not(:defined) { visibility:hidden; }
+  a { color:#2E6B64; } a:hover { color:#21514c; }
+</style>
+</helmet>
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" size="a4" margin="16mm" hint-size="794px,1123px">
+
+  <!-- COVER -->
+  <div style="display:flex;align-items:center;gap:9px;color:#3E8F86;font-size:12px;font-weight:700;letter-spacing:.04em">
+    <span style="width:9px;height:9px;border-radius:2px;background:#3E8F86;display:inline-block"></span>
+    社会福祉法人 誠光福祉会　えんゆうの郷
+  </div>
+  <h1 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:27px;letter-spacing:.01em;margin:8px 0 4px;color:#242926">週間予定表　クラウド同期　セットアップ手順書</h1>
+  <p style="font-size:13.5px;line-height:1.8;color:#5a605c;margin:0 0 6px">
+    この手順に沿って設定すると、<b>複数の端末（最大10台程度）で同じ予定表を共有</b>できます。
+    データは施設の Google スプレッドシートに保存され、ある端末の入力が数秒で他の端末にも反映されます。
+    <b>専門知識は不要です。上から順に進めてください（所要 約15分・最初の1回だけ）。</b>
+  </p>
+
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:13px 16px;margin:14px 0 4px">
+    <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:14px;color:#2E6B64;margin-bottom:6px">はじめに用意するもの</div>
+    <ul style="font-size:12.5px;line-height:1.75;color:#3a403c;margin:0;padding-left:20px">
+      <li>インターネットにつながるパソコン</li>
+      <li>施設（法人）の <b>Google アカウント</b>（このアカウントの持ち物としてデータが保存されます）</li>
+      <li>同期用のファイル <b>「同期サーバー_GoogleAppsScript.gs.txt」</b>（この手順書と一緒にお渡ししています）</li>
+    </ul>
+  </div>
+
+  <!-- STEP 1 -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ 1　スプレッドシートを作る</h2>
+  <ol style="font-size:13px;line-height:1.9;color:#3a403c;margin:0;padding-left:22px">
+    <li>施設の Google アカウントでログインし、<b><a href="https://sheets.new">sheets.new</a></b> を開きます（新しいスプレッドシートが作られます）。</li>
+    <li>左上のファイル名をクリックし、<b>「ピュアット週間予定表 データ」</b> など分かりやすい名前に変更します。</li>
+    <li>このシートは <b>データの保管庫</b>です。中身は自動で作られるので、手入力は不要です。</li>
+  </ol>
+
+  <!-- STEP 2 -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ 2　同期プログラムを貼り付ける</h2>
+  <ol style="font-size:13px;line-height:1.9;color:#3a403c;margin:0;padding-left:22px">
+    <li>スプレッドシートの上部メニューで <b>拡張機能 ▸ Apps Script</b> をクリックします。</li>
+    <li>新しいタブでコード画面が開きます。最初から入っている文字（<span style="font-family:monospace;font-size:12px">function myFunction…</span>）を <b>すべて選択して削除</b>します。</li>
+    <li>お渡しした <b>「同期サーバー_GoogleAppsScript.gs.txt」</b> をメモ帳などで開き、<b>中身を全部コピー</b>して、この画面に <b>貼り付け</b>ます。</li>
+    <li>フロッピーディスクの形の <b>保存アイコン</b>（または Ctrl+S）で保存します。</li>
+  </ol>
+
+  <!-- STEP 3 -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ 3　ウェブアプリとして公開する（最重要）</h2>
+  <p style="font-size:13px;line-height:1.8;color:#3a403c;margin:0 0 8px">ここで発行される <b>URL</b> が、予定表アプリとスプレッドシートをつなぐ「住所」になります。設定を間違えると同期できないので、赤字の部分に注意してください。</p>
+  <ol style="font-size:13px;line-height:1.9;color:#3a403c;margin:0;padding-left:22px">
+    <li>Apps Script 画面の右上 <b>「デプロイ」▸「新しいデプロイ」</b> をクリックします。</li>
+    <li>左の歯車マーク ▸ <b>「ウェブアプリ」</b> を選びます。</li>
+    <li>設定を次のようにします：
+      <div style="background:#FBFAF7;border:1px solid #E4EDE9;border-radius:10px;padding:10px 14px;margin:7px 0">
+        <div style="font-size:12.5px;line-height:1.9;color:#3a403c">
+          ・説明：<span style="color:#8a908b">（空欄でOK）</span><br>
+          ・次のユーザーとして実行：<b>自分</b><br>
+          ・アクセスできるユーザー：<b style="color:#C0392B">全員</b>　← 必ず「全員」にしてください
+        </div>
+      </div>
+    </li>
+    <li><b>「デプロイ」</b>を押します。初回は「アクセスを承認」を求められます。自分のアカウントを選び、
+      「詳細」▸「（プロジェクト名）に移動」▸「許可」と進めて承認します
+      <span style="color:#8a908b">（Google が出す通常の確認です）</span>。</li>
+    <li>完了画面に出る <b style="color:#2E6B64">ウェブアプリの URL</b>（末尾が <span style="font-family:monospace;font-size:12px">/exec</span>）を <b>コピー</b>します。次のステップで使います。</li>
+  </ol>
+
+  <!-- STEP 4 -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ 4　予定表アプリに URL を登録する</h2>
+  <ol style="font-size:13px;line-height:1.9;color:#3a403c;margin:0;padding-left:22px">
+    <li>週間予定表アプリ（またはユニット週間予定表）を開きます。</li>
+    <li>画面 <b>右下</b> にある <b>「● 同期未設定」</b> のボタンをクリックします。</li>
+    <li>入力欄が出たら、ステップ3でコピーした <b>URL を貼り付けて OK</b> を押します。</li>
+    <li>ボタンが <b style="color:#3E8F86">「● 同期中」</b> に変われば成功です。この設定はその端末に記憶されます。</li>
+  </ol>
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:11px 15px;margin:12px 0 0;display:flex;gap:10px;align-items:flex-start">
+    <span style="font-size:16px;flex-shrink:0">💡</span>
+    <div style="font-size:12.5px;line-height:1.7;color:#3a4c48">同じ URL を、<b>共有したいすべての端末で</b>（各ユニットのタブレット・事務所のPCなど）ステップ4だけ繰り返してください。これで全端末が同じデータにつながります。</div>
+  </div>
+
+  <!-- STEP 5 -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ 5　動作を確認する</h2>
+  <ol style="font-size:13px;line-height:1.9;color:#3a403c;margin:0;padding-left:22px">
+    <li>1台目の端末で、どこかのユニット予定表に浴種や担当職員を入力します。</li>
+    <li>2台目の端末で同じ予定表を開き、<b>数秒待つ</b>と同じ内容が表示されれば同期成功です。</li>
+    <li>スプレッドシートを見ると <b>「Data」シート</b>に記録が増えていきます（自動で作成されます）。</li>
+  </ol>
+
+  <!-- TROUBLE -->
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:18px;color:#242926;margin:26px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">困ったときは</h2>
+  <div style="display:flex;flex-direction:column;gap:9px">
+    <sc-for list="{{ faqs }}" as="f" hint-placeholder-count="4">
+      <div style="border:1px solid #E4EDE9;border-radius:10px;padding:10px 14px">
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#a5402b;margin-bottom:3px">{{ f.q }}</div>
+        <div style="font-size:12.5px;line-height:1.7;color:#3a403c">{{ f.a }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- NOTES -->
+  <div style="background:#FBFAF7;border:1px solid #E4EDE9;border-radius:12px;padding:13px 16px;margin:22px 0 0">
+    <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#3a403c;margin-bottom:6px">安全と運用上の注意</div>
+    <ul style="font-size:12px;line-height:1.7;color:#5a605c;margin:0;padding-left:20px">
+      <li>URL を知っている人はデータにアクセスできます。<b>URL は施設内だけで共有</b>し、外部に公開しないでください。</li>
+      <li>同じマスを2人が全く同時に編集した場合は、<b>後から保存した方が残ります</b>（別々のマスなら両方残ります）。</li>
+      <li>ログイン情報（誰がログインしたか）は端末ごとの管理で、同期されません。</li>
+      <li>スプレッドシートは施設のバックアップも兼ねます。<b>削除しないでください。</b></li>
+    </ul>
+  </div>
+
+  <div style="margin-top:26px;padding-top:11px;border-top:1px solid #EDEBE3;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#a0a59f">
+    <span>えんゆうの郷　週間予定表 クラウド同期 セットアップ手順書</span>
+    <span>ver.1.0　令和8年7月</span>
+  </div>
+
+</x-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    return {
+      faqs: [
+        { q: '右下のボタンが「オフライン」になる', a: 'URL が間違っているか、ネットにつながっていません。URL の末尾が /exec になっているか確認し、右下ボタンをもう一度押して貼り直してください。' },
+        { q: '「同期未設定」のまま変わらない', a: 'URL がまだ登録されていません。ステップ4をもう一度行ってください。空欄で保存すると同期は止まります。' },
+        { q: '他の端末に反映されない', a: 'すべての端末で同じ URL を登録しているか確認してください。反映には数秒かかります。少し待っても変わらない場合は、その端末の右下ボタンで URL を入れ直してください。' },
+        { q: 'デプロイ時に「アクセスできるユーザー」を間違えた', a: '「デプロイ ▸ デプロイを管理」から編集し、「全員」に直して再デプロイしてください。URL は変わりません。' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

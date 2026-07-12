@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+  doc-page:not(:defined){ visibility:hidden; }
+  a { color:#2E6B64; } a:hover { color:#21514c; }
+</style>
+</helmet>
+<x-import component-from-global-scope="doc-page" from="./doc-page.js" size="a4" margin="16mm" hint-size="794px,1123px">
+
+  <div style="display:flex;align-items:center;gap:9px;color:#3E8F86;font-size:12px;font-weight:700;letter-spacing:.04em">
+    <span style="width:9px;height:9px;border-radius:2px;background:#3E8F86;display:inline-block"></span>
+    社会福祉法人 誠光福祉会　えんゆうの郷
+  </div>
+  <h1 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:26px;margin:8px 0 4px;color:#242926">スマホアプリ公開手順書（Render 版）</h1>
+  <p style="font-size:13.5px;line-height:1.8;color:#5a605c;margin:0 0 8px">
+    予定表を <b>iPhone・Android の「ホーム画面アプリ」</b>として使えるように、Render という無料サービスに公開します。
+    公開は最初の1回だけ。以降は各スマホで「ホーム画面に追加」するだけです。
+    <b>データの保存先は今までどおり Google（GAS）</b>で、そのまま同期されます。
+  </p>
+
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:12px 16px;margin:12px 0 4px">
+    <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#2E6B64;margin-bottom:5px">用意するもの</div>
+    <ul style="font-size:12.5px;line-height:1.7;color:#3a403c;margin:0;padding-left:20px">
+      <li>お渡しする <b>アプリ一式フォルダ（app）</b>（この手順書と一緒にダウンロード）</li>
+      <li>メールアドレス（GitHub と Render の無料登録に使用）</li>
+    </ul>
+  </div>
+
+  <p style="font-size:12px;color:#8a908b;margin:6px 0 14px;line-height:1.6">
+    ※ Render はファイルを「GitHub」という置き場に置いてから公開する仕組みです。難しい操作はなく、すべてブラウザ上のドラッグ＆ドロップで完了します。
+  </p>
+
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:17px;color:#242926;margin:22px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ1　GitHub にファイルを置く</h2>
+  <ol style="font-size:12.5px;line-height:1.85;color:#3a403c;margin:0;padding-left:22px">
+    <li><b><a href="https://github.com/signup">github.com/signup</a></b> で無料アカウントを作成します。</li>
+    <li>ログイン後、右上「＋」▸ <b>New repository</b>。名前を <b>puatto-app</b> 等にし、<b>Public</b> のまま <b>Create repository</b>。</li>
+    <li>次の画面の <b>「uploading an existing file」</b> リンクをクリック。</li>
+    <li>お渡しした <b>app フォルダの中身</b>（フォルダごとではなく<b>中のファイル全部</b>）を、画面にドラッグ＆ドロップ。</li>
+    <li>下の <b>Commit changes</b> ボタンを押します。これでファイルが置かれました。</li>
+  </ol>
+
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:17px;color:#242926;margin:22px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ2　Render で公開する</h2>
+  <ol style="font-size:12.5px;line-height:1.85;color:#3a403c;margin:0;padding-left:22px">
+    <li><b><a href="https://render.com">render.com</a></b> を開き、<b>「Get Started」</b>から <b>GitHub アカウントで登録</b>します。</li>
+    <li>ダッシュボードで <b>New ▸ Static Site</b> を選びます。</li>
+    <li>先ほどの <b>puatto-app</b> リポジトリを選び <b>Connect</b>。</li>
+    <li>設定は次のようにします：
+      <div style="background:#FBFAF7;border:1px solid #E4EDE9;border-radius:10px;padding:9px 14px;margin:6px 0">
+        <div style="font-size:12px;line-height:1.9;color:#3a403c">
+          ・Build Command：<span style="color:#8a908b">（空欄でOK）</span><br>
+          ・Publish Directory：<b>.</b> <span style="color:#8a908b">（半角ピリオド1つ）</span>
+        </div>
+      </div>
+    </li>
+    <li><b>Create Static Site</b> を押すと数分で公開されます。画面上部に <b style="color:#2E6B64">https://puatto-app.onrender.com</b> のような URL が出ます。これがアプリの住所です。</li>
+  </ol>
+
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:17px;color:#242926;margin:22px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ3　スマホでアプリにする</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="border:1px solid #E4EDE9;border-radius:11px;padding:11px 14px">
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926;margin-bottom:6px">iPhone（Safari）</div>
+      <ol style="font-size:12px;line-height:1.8;color:#3a403c;margin:0;padding-left:18px">
+        <li>Safari で公開URLを開く</li>
+        <li>下の <b>共有ボタン（□↑）</b> をタップ</li>
+        <li><b>「ホーム画面に追加」</b>を選ぶ</li>
+        <li>アイコンが追加され、全画面で起動します</li>
+      </ol>
+    </div>
+    <div style="border:1px solid #E4EDE9;border-radius:11px;padding:11px 14px">
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926;margin-bottom:6px">Android（Chrome）</div>
+      <ol style="font-size:12px;line-height:1.8;color:#3a403c;margin:0;padding-left:18px">
+        <li>Chrome で公開URLを開く</li>
+        <li>右上の <b>︙（メニュー）</b> をタップ</li>
+        <li><b>「アプリをインストール」</b>または「ホーム画面に追加」</li>
+        <li>アイコンが追加され、全画面で起動します</li>
+      </ol>
+    </div>
+  </div>
+
+  <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:17px;color:#242926;margin:22px 0 10px;padding-bottom:7px;border-bottom:2px solid #3E8F86">ステップ4　同期はすでに設定済み</h2>
+  <p style="font-size:12.5px;line-height:1.85;color:#3a403c;margin:0 0 6px">
+    データの保存先（Google の /exec URL）は<b>アプリにあらかじめ組み込み済み</b>です。各端末での貼り付けは不要で、アプリを開くと<b>自動的につながります</b>。
+    予定表画面の右下ピルが <b style="color:#3E8F86">「同期中（受信○件）」</b> になっていれば正常です。
+  </p>
+  <p style="font-size:11.5px;line-height:1.7;color:#8a908b;margin:0">
+    ※ 保存先を変えたいときだけ、右下ピルをタップして別の URL に変更できます。
+  </p>
+
+  <div style="background:#F1F7F6;border:1px solid #DCEBE8;border-radius:12px;padding:11px 15px;margin:16px 0 0;display:flex;gap:10px;align-items:flex-start">
+    <span style="font-size:16px;flex-shrink:0">💡</span>
+    <div style="font-size:12px;line-height:1.7;color:#3a4c48">
+      予定表を直したくなったら、GitHub の同じリポジトリでファイルを差し替えるだけで、Render が自動で更新します。URL・アイコンはそのままです。
+    </div>
+  </div>
+
+  <div style="margin-top:24px;padding-top:11px;border-top:1px solid #EDEBE3;display:flex;justify-content:space-between;align-items:center;font-size:10px;color:#a0a59f">
+    <span>えんゆうの郷　スマホアプリ公開手順書（Render 版）</span>
+    <span>ver.1.0　令和8年7月</span>
+  </div>
+
+</x-import>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* =====================================================================
+   ピュアット週間予定表  同期サーバー  (Google Apps Script)
+   ---------------------------------------------------------------------
+   スプレッドシートに紐づく Apps Script として貼り付けて使います。
+   「Data」という名前のシートに、key / json / updatedAt を保存します。
+
+   ■ セットアップ（詳しくは付属の手順書を参照）
+     1) 共有したいスプレッドシートを開く
+     2) 拡張機能 ▸ Apps Script を開く
+     3) 既定のコードを全部消して、このコードを貼り付けて保存
+     4) デプロイ ▸ 新しいデプロイ ▸ 種類「ウェブアプリ」
+          - 次のユーザーとして実行： 自分
+          - アクセスできるユーザー： 全員
+     5) 発行された「ウェブアプリ URL」を、予定表アプリの右下「同期」ピルに貼る
+   ===================================================================== */
+
+var SHEET_NAME = 'Data';
+
+function getSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(SHEET_NAME);
+  if (!sh) {
+    sh = ss.insertSheet(SHEET_NAME);
+    sh.getRange(1, 1, 1, 3).setValues([['key', 'json', 'updatedAt']]);
+  }
+  return sh;
+}
+
+/* すべての行を { key: {rowIndex, obj} } として読み込む */
+function readAll_(sh) {
+  var last = sh.getLastRow();
+  var map = {};
+  if (last < 2) return map;
+  var values = sh.getRange(2, 1, last - 1, 2).getValues();
+  for (var i = 0; i < values.length; i++) {
+    var key = values[i][0];
+    if (!key) continue;
+    var obj = {};
+    try { obj = JSON.parse(values[i][1] || '{}'); } catch (e) { obj = {}; }
+    map[key] = { row: i + 2, obj: obj };
+  }
+  return map;
+}
+
+/* ---- 取得（GET / JSONP）---------------------------------------------- */
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  var callback = p.callback;
+  var payload = { ok: true, data: {} };
+
+  try {
+    var sh = getSheet_();
+    var map = readAll_(sh);
+    var data = {};
+    for (var key in map) data[key] = map[key].obj;
+    payload.data = data;
+  } catch (err) {
+    payload = { ok: false, error: String(err) };
+  }
+
+  var body = JSON.stringify(payload);
+  if (callback) {
+    return ContentService
+      .createTextOutput(callback + '(' + body + ');')
+      .setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ---- 保存（POST：差分マージ）---------------------------------------- */
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  try {
+    var req = {};
+    try { req = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (er) { req = {}; }
+    var ops = req.ops || [];
+    var sh = getSheet_();
+    var map = readAll_(sh);
+    var now = new Date();
+
+    for (var i = 0; i < ops.length; i++) {
+      var op = ops[i];
+      if (!op || !op.key) continue;
+      var entry = map[op.key];
+      var obj = entry ? entry.obj : {};
+
+      // set：フィールドを上書き
+      if (op.set) { for (var f in op.set) obj[f] = op.set[f]; }
+      // del：フィールドを削除
+      if (op.del) { for (var j = 0; j < op.del.length; j++) delete obj[op.del[j]]; }
+
+      var json = JSON.stringify(obj);
+      if (entry) {
+        sh.getRange(entry.row, 2, 1, 2).setValues([[json, now]]);
+        entry.obj = obj;
+      } else {
+        sh.appendRow([op.key, json, now]);
+        map[op.key] = { row: sh.getLastRow(), obj: obj };
+      }
+    }
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: true, saved: ops.length }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ ok: false, error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } finally {
+    lock.releaseLock();
+  }
+}

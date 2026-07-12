@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="入浴予定">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#3E8F86">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+    input.lf { font-family:'Noto Sans JP',sans-serif; width:100%; box-sizing:border-box; border:1.5px solid #E1DDD2; border-radius:11px; padding:13px 14px; background:#fff; font-size:15px; color:#2B302E; }
+    input.lf:focus { outline:none; border-color:#3E8F86; box-shadow:0 0 0 3px rgba(62,143,134,.15); }
+    input.lf::placeholder { color:#b7bcb4; }
+  </style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px 20px;background:radial-gradient(1200px 600px at 50% -10%, #F3F1E8 0%, #EDEBE3 60%)">
+  <div style="width:100%;max-width:430px">
+
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="width:64px;height:64px;border-radius:18px;background:#3E8F86;color:#fff;display:inline-flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:30px;box-shadow:0 8px 22px rgba(62,143,134,.3)">湯</div>
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:23px;color:#242926;margin-top:14px;letter-spacing:.01em">ピュアット 週間入浴管理</div>
+      <div style="font-size:12.5px;color:#8a908b;margin-top:4px">えんゆうの郷　入浴・スキンケア記録システム</div>
+    </div>
+
+    <div style="background:#fff;border:1px solid #E2DFD6;border-radius:20px;padding:26px 24px 24px;box-shadow:0 10px 30px rgba(60,55,40,.08)">
+      <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#242926;margin-bottom:18px">職員ログイン</div>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#6b716c;margin-bottom:6px">職員ID</label>
+          <input class="lf" value="{{ idVal }}" onInput="{{ onId }}" placeholder="例：nagisa01" autocomplete="username">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:700;color:#6b716c;margin-bottom:6px">パスワード</label>
+          <input class="lf" type="password" value="{{ pwVal }}" onInput="{{ onPw }}" onKeyDown="{{ onKey }}" placeholder="パスワード" autocomplete="current-password">
+        </div>
+
+        <label style="display:flex;align-items:center;gap:9px;font-size:13px;color:#5b615d;cursor:pointer;user-select:none;margin-top:2px">
+          <input type="checkbox" checked="{{ remember }}" onChange="{{ onRemember }}" style="width:17px;height:17px;accent-color:#3E8F86;cursor:pointer">
+          この端末でログイン状態を保持する
+        </label>
+
+        <sc-if value="{{ error }}" hint-placeholder-val="{{ false }}">
+          <div style="font-size:12.5px;font-weight:700;color:#C0392B;background:#FBE9E5;border:1px solid #EFC9BE;border-radius:10px;padding:9px 12px">{{ errorMsg }}</div>
+        </sc-if>
+
+        <button onClick="{{ onLogin }}" style="margin-top:6px;width:100%;border:none;border-radius:12px;padding:14px;background:#3E8F86;color:#fff;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15.5px;cursor:pointer;box-shadow:0 6px 16px rgba(62,143,134,.28)" style-hover="background:#357c74">ログイン</button>
+      </div>
+
+      <div style="margin-top:16px;padding-top:15px;border-top:1px solid #EFEDE5;font-size:11.5px;color:#a0a59f;line-height:1.6">
+        デモ用ID：<b style="color:#6b716c">nagisa</b> ／ パスワード：<b style="color:#6b716c">1234</b><br>
+        記録は各端末に保存され、iPad・PCどちらからでも同じ手順で更新できます。
+      </div>
+    </div>
+
+    <div style="text-align:center;font-size:10.5px;color:#a8ada6;margin-top:20px">特許第6353936号 ウルトラファインバブル洗身　／　© えんゆうの郷</div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:900,&quot;height&quot;:760}}">
+class Component extends DCLogic {
+  state = { idVal:'', pwVal:'', remember:true, error:false, errorMsg:'' };
+  onId  = (e) => this.setState({ idVal: e.target.value, error:false });
+  onPw  = (e) => this.setState({ pwVal: e.target.value, error:false });
+  onRemember = (e) => this.setState({ remember: e.target.checked });
+  onKey = (e) => { if (e.key === 'Enter') this.login(); };
+  login(){
+    const id = (this.state.idVal || '').trim().toLowerCase();
+    const pw = (this.state.pwVal || '').trim();
+    if (!id || !pw) { this.setState({ error:true, errorMsg:'職員IDとパスワードを入力してください。' }); return; }
+    // prototype auth
+    if (!(id === 'nagisa' && pw === '1234') && pw.length < 4) {
+      this.setState({ error:true, errorMsg:'IDまたはパスワードが正しくありません。' }); return;
+    }
+    try {
+      const session = { id, at: Date.now() };
+      const store = this.state.remember ? localStorage : sessionStorage;
+      store.setItem('puatto-session', JSON.stringify(session));
+    } catch(e){}
+    if (typeof location !== 'undefined') location.href = 'ピュアット週間予定表.dc.html';
+  }
+  renderVals(){
+    return {
+      idVal: this.state.idVal, pwVal: this.state.pwVal,
+      remember: this.state.remember, error: this.state.error, errorMsg: this.state.errorMsg,
+      onId: this.onId, onPw: this.onPw, onRemember: this.onRemember, onKey: this.onKey,
+      onLogin: () => this.login(),
+    };
+  }
+}
+</script>
+</body>
+</html>

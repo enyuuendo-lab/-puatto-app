@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="入浴予定">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#3E8F86">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./puatto-sync.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; background:#EDEBE3; font-family:'Noto Sans JP',sans-serif; -webkit-font-smoothing:antialiased; color:#2B302E; }
+    a { color:#2E6B64; text-decoration:none; } a:hover { color:#21514c; }
+    select.uw { font-family:'Noto Sans JP',sans-serif; width:100%; box-sizing:border-box; border:1px solid #E1DDD2; border-radius:7px; padding:5px 3px; background:#fff; font-size:11px; cursor:pointer; text-align:center; text-align-last:center; }
+    select.uw:focus { outline:2px solid #9cc7c0; }
+    select.ut { font-size:10px; padding:4px 2px; }
+    input.stf { font-family:'Noto Sans JP',sans-serif; width:100%; box-sizing:border-box; border:1px solid #E1DDD2; border-radius:7px; padding:4px 6px; background:#fff; font-size:10px; color:#3a403c; }
+    input.stf:focus { outline:2px solid #9cc7c0; }
+    input.stf::placeholder { color:#c2c6c0; }
+
+    @page { size: A4 landscape; margin: 5mm; }
+    @media print { html, body { background:#fff !important; } }
+    .app-wrap.printmode { padding:0 !important; max-width:none !important; width:1084px !important; }
+    .app-wrap.printmode .noprint { display:none !important; }
+    .app-wrap.printmode .tcard { border:none !important; box-shadow:none !important; border-radius:0 !important; padding:0 !important; margin:0 !important; }
+    .app-wrap.printmode .tscroll { overflow:visible !important; margin:0 !important; padding:0 !important; }
+    .app-wrap.printmode .tgrid { min-width:0 !important; width:100% !important; gap:3px !important; }
+    .app-wrap.printmode .tgrid > div { gap:3px !important; }
+    .app-wrap.printmode .dhdr { padding:3px 0 !important; }
+    .app-wrap.printmode .rlabel { padding:0 6px !important; }
+    .app-wrap.printmode .prow { padding:3px !important; gap:3px !important; }
+    .app-wrap.printmode select.uw { -webkit-appearance:none; appearance:none; border-color:#D5D0C4 !important; }
+  </style>
+</helmet>
+<div class="app-wrap" style="max-width:1240px;margin:0 auto;padding:22px 20px 40px">
+  <div class="noprint" style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px">
+    <a href="ピュアット週間予定表.dc.html" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#6b716c">← 週間入浴予定表へもどる</a>
+    <button onClick="{{ onPrint }}" style="font-size:11.5px;color:{{ unitAccent }};font-weight:700;padding:8px 12px;border:1px solid #E2DFD6;background:#F1EFE8;border-radius:10px;white-space:nowrap;cursor:pointer">🖨 印刷（A4×1枚）</button>
+  </div>
+
+  <div style="background:{{ unitHeaderBg }};border:1px solid {{ unitHeaderBorder }};border-radius:16px;padding:16px 20px;margin-bottom:14px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+    <div style="width:54px;height:54px;border-radius:13px;background:{{ unitAccent }};color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:24px;flex-shrink:0">{{ unitAvatar }}</div>
+    <div style="flex:1;min-width:220px">
+      <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+        <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:22px;color:#242926">{{ unitDisp }}ユニット</span>
+        <span style="font-size:11px;font-weight:700;color:{{ unitBadgeColor }};background:{{ unitBadgeBg }};padding:3px 9px;border-radius:999px">{{ unitGrp }}</span>
+        <span style="font-size:11px;font-weight:700;color:#8a908b;background:#F1EFE8;padding:3px 9px;border-radius:999px">入浴：{{ unitMethods }}</span>
+      </div>
+      <div style="font-size:12px;color:#737974;margin-top:3px">ご入居者週間入浴予定表　—　枠内でご入居者・浴種・担当職員を選択</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #E2DFD6;border-radius:12px;padding:5px 6px">
+        <button onClick="{{ onPrev }}" style="width:28px;height:28px;border:none;background:#F2F0E8;border-radius:8px;cursor:pointer;font-size:13px;color:{{ prevColor }}">◀</button>
+        <div style="text-align:center;min-width:140px">
+          <div style="font-size:10.5px;color:#8a908b;font-weight:700">{{ weekNavLabel }}</div>
+          <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:12.5px;color:#3a403c">{{ weekLabel }}</div>
+        </div>
+        <button onClick="{{ onNext }}" style="width:28px;height:28px;border:none;background:#F2F0E8;border-radius:8px;cursor:pointer;font-size:13px;color:{{ nextColor }}">▶</button>
+      </div>
+      <sc-if value="{{ showToday }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ onToday }}" style="font-size:11px;font-weight:700;color:{{ unitAccent }};background:#F1EFE8;border:1px solid #E2DFD6;border-radius:10px;padding:7px 10px;cursor:pointer;white-space:nowrap">今週へ</button>
+      </sc-if>
+    </div>
+  </div>
+
+  <div class="noprint" style="background:#fff;border:1px solid #E2DFD6;border-radius:14px;padding:11px 14px;margin-bottom:14px">
+    <div style="font-size:10.5px;font-weight:700;color:#8a908b;margin-bottom:8px">ユニットを切り替え（全14）</div>
+    <div style="display:flex;gap:18px;flex-wrap:wrap">
+      <sc-for list="{{ navGroups }}" as="g" hint-placeholder-count="4">
+        <div style="min-width:0">
+          <div style="font-size:10px;font-weight:700;color:{{ g.color }};margin-bottom:5px">{{ g.bld }}</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <sc-for list="{{ g.units }}" as="u" hint-placeholder-count="4">
+              <a href="{{ u.href }}" style="display:inline-flex;align-items:center;justify-content:center;min-width:34px;font-size:12.5px;font-weight:700;color:{{ u.color }};background:{{ u.bg }};border:{{ u.border }};padding:5px 12px;border-radius:999px">{{ u.disp }}</a>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="background:#fff;border:1px solid #E2DFD6;border-radius:14px;padding:12px 15px;margin-bottom:14px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;flex-wrap:wrap">
+      <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:12.5px;color:#242926">ご入居者（10名）</span>
+      <span style="font-size:10.5px;color:#8a908b">— 週の入浴回数を表示（週2回以上が目安）</span>
+      <span style="flex:1"></span>
+      <sc-if value="{{ allOk }}" hint-placeholder-val="{{ true }}">
+        <span style="font-size:11px;font-weight:700;color:#2E8B7F;background:#E4F1EE;padding:4px 11px;border-radius:999px">✓ 全員 週2回以上</span>
+      </sc-if>
+      <sc-if value="{{ shortCount }}" hint-placeholder-val="{{ 0 }}">
+        <span style="font-size:11px;font-weight:700;color:#C0392B;background:#FBE9E5;padding:4px 11px;border-radius:999px">⚠ 週2回未満 {{ shortLabel }}</span>
+      </sc-if>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:7px 16px">
+      <sc-for list="{{ roster }}" as="r" hint-placeholder-count="10">
+        <div style="display:flex;align-items:center;gap:7px;font-size:12.5px">
+          <span style="font-weight:700;color:{{ unitAccent }};min-width:16px">{{ r.mark }}</span>
+          <span style="color:{{ r.nameColor }};flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span>
+          <span style="font-size:10.5px;font-weight:700;color:{{ r.badgeColor }};background:{{ r.badgeBg }};padding:2px 8px;border-radius:999px;white-space:nowrap">{{ r.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:9px;padding:0 4px">
+    <span style="font-size:11px;color:#7a716a"><b style="color:#C0392B">■</b> {{ bldNoLabel }}内で同一浴種のピュアット／シャワートロリーが同時間帯に重なると赤色で警告</span>
+    <span style="font-size:11px;color:#7a716a">担当職員：個浴 1名／特浴 2名を記入</span>
+  </div>
+
+  <div class="tcard" style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 16px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+    <div class="tscroll" style="overflow-x:auto;margin:0 -2px;padding:2px">
+    <div class="tgrid" style="min-width:980px;display:flex;flex-direction:column;gap:6px">
+      <div style="display:grid;grid-template-columns:92px repeat(7,1fr);gap:6px">
+        <div></div>
+        <sc-for list="{{ days }}" as="d" hint-placeholder-count="7">
+          <div class="dhdr" style="text-align:center;padding:6px 0;border-radius:9px;background:{{ d.hdrBg }};border:{{ d.hdrBorder }}">
+            <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:{{ d.wWeight }};font-size:14px;color:{{ d.wColor }}">{{ d.wLabel }}</div>
+            <div style="font-size:10px;color:#8a908b">{{ d.dLabel }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-for list="{{ rows }}" as="row" hint-placeholder-count="12">
+        <div style="display:grid;grid-template-columns:92px repeat(7,1fr);gap:6px;align-items:stretch">
+          <div class="rlabel" style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 8px;border-left:4px solid {{ row.barColor }};background:{{ row.labelBg }};border-radius:7px">
+            <span style="font-size:10px;color:#8a908b;font-weight:500">{{ row.slot }}</span>
+            <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:11.5px;color:{{ row.tagColor }};line-height:1.25;white-space:nowrap">{{ row.tag }}</span>
+          </div>
+          <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="7">
+            <div class="prow" style="border-radius:9px;padding:5px;background:{{ cell.bg }};border:{{ cell.border }};display:flex;flex-direction:column;gap:4px">
+              <select class="uw" value="{{ cell.rVal }}" onChange="{{ cell.rOnChange }}" style="color:{{ cell.rColor }};font-weight:{{ cell.rWeight }}">
+                <sc-for list="{{ cell.rOptions }}" as="opt" hint-placeholder-count="11"><option value="{{ opt.id }}">{{ opt.name }}</option></sc-for>
+              </select>
+              <sc-if value="{{ cell.show }}" hint-placeholder-val="{{ false }}">
+                <select class="uw ut" value="{{ cell.tVal }}" onChange="{{ cell.tOnChange }}" style="color:{{ cell.tColor }};font-weight:700">
+                  <sc-for list="{{ cell.tOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
+                </select>
+                <sc-for list="{{ cell.staff }}" as="st" hint-placeholder-count="1">
+                  <input class="stf" value="{{ st.val }}" onChange="{{ st.onChange }}" onInput="{{ st.onChange }}" placeholder="{{ st.ph }}">
+                </sc-for>
+                <sc-if value="{{ cell.conflict }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:9px;font-weight:700;color:#C0392B;text-align:center;line-height:1.2">{{ cell.conflictLabel }}</span>
+                </sc-if>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+    </div>
+  </div>
+
+  <div class="noprint" style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:15px 17px;margin-top:14px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+    <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;margin-bottom:13px">
+      <div style="flex:1;min-width:220px">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap">
+          <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:16px;color:#242926">対応職員 月次集計</span>
+          <span style="font-size:11px;font-weight:700;color:{{ unitBadgeColor }};background:{{ unitBadgeBg }};padding:3px 9px;border-radius:999px">{{ staffMonthLabel }}</span>
+        </div>
+        <div style="font-size:11px;color:#737974;margin-top:2px">当ユニット（{{ unitDisp }}）の週間予定表に入力された担当職員を、当月分まとめて集計。個浴＝1名／特浴＝2名を1コマとして加算します。</div>
+      </div>
+      <div style="display:flex;gap:20px;flex-shrink:0">
+        <div style="text-align:center"><div style="font-size:10.5px;color:#8a908b">職員数</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:22px;color:#3a403c">{{ staffPeople }}</div></div>
+        <div style="text-align:center"><div style="font-size:10.5px;color:#8a908b">総コマ数</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:22px;color:{{ unitAccent }}">{{ staffTotal }}</div></div>
+      </div>
+    </div>
+    <sc-if value="{{ staffHasData }}" hint-placeholder-val="{{ false }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(228px,1fr));gap:9px 18px">
+        <sc-for list="{{ staffList }}" as="p" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:11px;font-weight:900;color:#b5b9b2;min-width:20px;text-align:right">{{ p.rank }}</span>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px">
+                <span style="font-size:12.5px;font-weight:700;color:#3a403c;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.name }}</span>
+                <span style="font-size:11px;font-weight:700;color:#3a403c;white-space:nowrap">{{ p.countLabel }}</span>
+              </div>
+              <div style="height:6px;border-radius:999px;background:#F1EFE8;margin-top:4px;overflow:hidden">
+                <div style="height:100%;width:{{ p.barW }};background:{{ p.barColor }};border-radius:999px"></div>
+              </div>
+              <sc-if value="{{ p.hasPuatto }}" hint-placeholder-val="{{ false }}">
+                <div style="font-size:9.5px;color:#8a908b;margin-top:2px">{{ p.detail }}</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ staffEmpty }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:16px;text-align:center;font-size:12px;color:#a0a59f;background:#FAF9F5;border-radius:10px;border:1px dashed #E1DDD2">
+        当月はまだ担当職員の入力がありません。上の予定表で担当職員を記入すると、月単位で自動集計されます。
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="text-align:center;font-size:10.5px;color:#a0a59f;margin-top:18px">えんゆうの郷　ユニット別ご入居者週間入浴予定表　／　特許第6353936号 ウルトラファインバブル洗身</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1240,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.MAX_WEEKS = 8; // 2ヶ月先まで
+    const id = this.readHash();
+    this.state = { currentId: id, weekOffset: 0, assign: {}, now: Date.now() };
+  }
+  units(){
+    return [
+      {id:'hana',name:'華',disp:'華',grp:'1号館 1階'},
+      {id:'jyu',name:'柔',disp:'柔',grp:'1号館 1階'},
+      {id:'ai',name:'逢',disp:'逢(SS)',grp:'1号館 1階'},
+      {id:'mei',name:'明',disp:'明',grp:'1号館 2階'},
+      {id:'subaru',name:'昴',disp:'昴',grp:'1号館 2階'},
+      {id:'tomo',name:'智',disp:'智',grp:'1号館 2階'},
+      {id:'en',name:'縁',disp:'縁',grp:'1号館 2階'},
+      {id:'karasaki',name:'唐崎',disp:'唐崎',grp:'2号館 1階'},
+      {id:'kihan',name:'帰帆',disp:'帰帆',grp:'2号館 1階'},
+      {id:'sekisho',name:'夕照',disp:'夕照',grp:'2号館 1階'},
+      {id:'seiran',name:'晴嵐',disp:'晴嵐',grp:'2号館 2階'},
+      {id:'bosetsu',name:'暮雪',disp:'暮雪',grp:'2号館 2階'},
+      {id:'bansho',name:'晩鐘',disp:'晩鐘',grp:'2号館 2階'},
+      {id:'shugetsu',name:'秋月',disp:'秋月',grp:'2号館 2階'},
+    ];
+  }
+  residents(){
+    return {
+      hana:['田中 清子','潟淵 治雄','田渕 きみ子','谷口 千代子','團野 ふさゑ','斎藤 ゑみ子','内堀 光雄','金田 八重子','内堀 まさ枝','大前 治雄'],
+      jyu:['日比野 初江','児玉 槇子','山本 始子','田中 由美','松田 栄美子','山本 靜子','東野 初子','大熊 みき','牟田 津代子','川原 啓嗣'],
+      ai:[],
+      mei:['山口 達浩','佐藤 美智子','福谷 義子','上田 弘子','百田 百合子','矢野 清美','杉江 幸','浅井 美佐子','松田 脩','鈴木 つや子'],
+      subaru:['中村 照子','明石 幸江','高取 秋野','森口 きよ子','森田 幸子','三田村 美代子','横江 貞子','中嶋 佳子','能登 俊子','西川 邦子'],
+      tomo:['竹川 幸子','加門 美喜子','岡根 萠子','松井 郁子','久泉 昭枝','木村 光栄','細野 千恵子','金澤 重夫','川口 美代子','舘 榮子'],
+      en:['山本 智樹','饗場 郁子','橋本 恵美子','出倉 幸代','野添 輝子','小林 美智子','中村 照榮','菱 愛子','松井 弘子','堀 満壽美'],
+      karasaki:['工藤 ハマ','横江 一美','寺田 富榮','松田 よし子','谷 清三','植村 祐子','黒川 米次郎','梅原 宣子','北出 和子','猪狩 末富'],
+      kihan:['徳重 悦子','小幡 美代子','藤田 三四子','小野 千恵子','岡田 弘子','岩田 健次','伊庭 ひさ','山本 悦子','大井 幸枝','安井 絹子'],
+      sekisho:['鈎 清次','潟淵 幸枝','山田 みち子','深見 道子','松田 たつ子','大久保 綾子','有田 己吉','中出 房枝','小半 桂子','後藤 孝子'],
+      seiran:['黒田 榮子','森田 正代','岡田 八郎','水口 まさ子','吉田 固行','小森 美代子','岩花 美智子','田島 悦子','貴島 惠子','杉江 房江'],
+      bosetsu:['田淵 つね','野村 南千代','吉野 ヨシ子','橋本 有子','辻 綾子','増田 和子','佐藤 桂子','山田 久','泉谷 とよ子','小寺 泰榮'],
+      bansho:['河村 實','木村 ふさ江','田中 榮造','山本 三男','遠藤 テル','平井 勝子','横江 増枝','佐伯 宣子','宮川 君江','瀧 進'],
+      shugetsu:['杉江 峰子','打田 智津枝','來海 道子','川井 博子','荒堀 希友子','森下 敏行','日下 紀美子','上林 清孝','大槻 加代子','津野 由美代'],
+    };
+  }
+  readHash(){
+    const h = (typeof location !== 'undefined' ? (location.hash || '') : '').replace('#','');
+    const ids = this.units().map(u => u.id);
+    return ids.includes(h) ? h : ids[0];
+  }
+  mondayISO(off){
+    const now = new Date(this.state.now);
+    const m = new Date(now); m.setHours(0,0,0,0);
+    m.setDate(now.getDate() - ((now.getDay()+6)%7) + off*7);
+    return m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0')+'-'+String(m.getDate()).padStart(2,'0');
+  }
+  storeKey(id, off){ return 'puatto-unit2-' + id + '-' + this.mondayISO(off); }
+  load(id, off){ try { return JSON.parse(localStorage.getItem(this.storeKey(id, off))) || {}; } catch(e){ return {}; } }
+  save(id, off, a){ try { localStorage.setItem(this.storeKey(id, off), JSON.stringify(a)); } catch(e){} }
+  monthStaff(id, refDate){
+    const y = refDate.getFullYear(), mo = refDate.getMonth();
+    const counts = {}, cache = {};
+    const DK = ['mon','tue','wed','thu','fri','sat','sun'];
+    const dim = new Date(y, mo + 1, 0).getDate();
+    for (let d = 1; d <= dim; d++){
+      const date = new Date(y, mo, d);
+      const dow = (date.getDay() + 6) % 7;
+      const monday = new Date(date); monday.setDate(d - dow);
+      const iso = monday.getFullYear() + '-' + String(monday.getMonth()+1).padStart(2,'0') + '-' + String(monday.getDate()).padStart(2,'0');
+      let data = cache[iso];
+      if (data === undefined){ try { data = JSON.parse(localStorage.getItem('puatto-unit2-' + id + '-' + iso)) || {}; } catch(e){ data = {}; } cache[iso] = data; }
+      const dk = DK[dow];
+      Object.keys(data).forEach(k => {
+        if (!k.endsWith('-' + dk)) return;
+        const c = data[k]; if (!c || typeof c !== 'object') return;
+        const isPu = c.t === 'pt' || c.t === 'pk';
+        Object.keys(c).forEach(fk => {
+          if (/^s\d+$/.test(fk)){
+            const nm = (c[fk] || '').trim();
+            if (!nm) return;
+            const r = counts[nm] = counts[nm] || { count: 0, puatto: 0 };
+            r.count++; if (isPu) r.puatto++;
+          }
+        });
+      });
+    }
+    return { counts, y, mo };
+  }
+  componentDidMount(){
+    this.setState({ assign: this.load(this.state.currentId, this.state.weekOffset) });
+    this._hc = () => { const id = this.readHash(); this.setState({ currentId: id, assign: this.load(id, this.state.weekOffset) }); };
+    window.addEventListener('hashchange', this._hc);
+    this._t = setInterval(() => this.setState({ now: Date.now() }), 60000);
+    this.setupPrint();
+    this._sync = () => this.setState({ assign: this.load(this.state.currentId, this.state.weekOffset) });
+    window.addEventListener('puatto-synced', this._sync);
+  }
+  componentWillUnmount(){ window.removeEventListener('hashchange', this._hc); clearInterval(this._t); this.teardownPrint(); window.removeEventListener('puatto-synced', this._sync); }
+  setupPrint(){
+    this._before = () => {
+      const w = document.querySelector('.app-wrap'); if(!w) return;
+      w.classList.add('printmode'); w.style.zoom = '';
+      void w.offsetHeight;
+      const usableH = 200/25.4*96 * 0.96;
+      const z = Math.min(1, usableH / w.scrollHeight);
+      w.style.zoom = z.toFixed(3);
+    };
+    this._after = () => { const w = document.querySelector('.app-wrap'); if(w){ w.classList.remove('printmode'); w.style.zoom=''; } };
+    window.addEventListener('beforeprint', this._before);
+    window.addEventListener('afterprint', this._after);
+  }
+  teardownPrint(){ window.removeEventListener('beforeprint', this._before); window.removeEventListener('afterprint', this._after); }
+  changeWeek(delta){
+    const off = Math.min(this.MAX_WEEKS, Math.max(0, this.state.weekOffset + delta));
+    if (off !== this.state.weekOffset) this.setState({ weekOffset: off, assign: this.load(this.state.currentId, off) });
+  }
+  setCell(key, patch){
+    this.setState(s => {
+      const prev = s.assign[key] || {};
+      const a = { ...s.assign, [key]: { ...prev, ...patch } };
+      this.save(s.currentId, s.weekOffset, a);
+      return { assign: a };
+    });
+  }
+
+  renderVals(){
+    const TEAL = '#3E8F86', BLUE = '#5588A6';
+    const UNITS = this.units();
+    const RES = this.residents();
+    const cur = UNITS.find(u => u.id === this.state.currentId) || UNITS[0];
+    const is2 = cur.grp.startsWith('2号館');
+    const bldNo = is2 ? 2 : 1;
+    const accent = is2 ? BLUE : TEAL;
+    const methods = is2 ? '個浴・ピュアット個浴・シャワートロリー' : 'ピュアット特浴／個浴・特浴／個浴';
+    const unitHeaderBg = is2 ? '#F1F5F8' : '#F1F7F6';
+    const unitHeaderBorder = is2 ? '#DEE9F0' : '#DCEBE8';
+    const unitBadgeBg = is2 ? '#E7EFF4' : '#E4F1EE';
+    const unitBadgeColor = is2 ? '#4d7f9c' : TEAL;
+
+    // bath-type options + rules
+    const TYPES_1 = [
+      {id:'',name:'浴種'},
+      {id:'pt',name:'ピュ特浴',puatto:true, staff:2},
+      {id:'pk',name:'ピュ個浴',puatto:true, staff:1},
+      {id:'t', name:'特浴',    puatto:false,staff:2},
+      {id:'k', name:'個浴',    puatto:false,staff:1},
+    ];
+    const TYPES_2 = [
+      {id:'',name:'浴種'},
+      {id:'k', name:'個浴',    puatto:false,staff:1},
+      {id:'pk',name:'ピュ個浴',puatto:true, staff:1},
+      {id:'sh',name:'シャワートロリー', puatto:false,staff:1},
+      {id:'t', name:'特浴（1号館）',    puatto:false,staff:2},
+      {id:'pt',name:'ピュ特浴（1号館）',puatto:true, staff:2},
+    ];
+    const TYPES = is2 ? TYPES_2 : TYPES_1;
+    const typeMeta = {}; TYPES.forEach(t => { if(t.id) typeMeta[t.id] = t; });
+    const typeOptions = TYPES.map(t => ({ id:t.id, name:t.name }));
+
+    // nav
+    const groupsOrder = ['1号館 1階','1号館 2階','2号館 1階','2号館 2階'];
+    const navGroups = groupsOrder.map(g => {
+      const g2 = g.startsWith('2号館');
+      return { bld:g, color: g2?BLUE:TEAL, units: UNITS.filter(u => u.grp === g).map(u => {
+        const active = u.id === cur.id;
+        return { disp:u.disp, href:'#'+u.id,
+          color: active ? '#fff' : (g2 ? '#4d7f9c' : TEAL),
+          bg: active ? (g2 ? BLUE : TEAL) : (g2 ? '#EEF3F7' : '#EAF3F1'),
+          border: active ? '1px solid transparent' : '1px solid ' + (g2 ? '#DEE9F0' : '#DCEBE8') };
+      }) };
+    });
+
+    // residents of current unit
+    const marks = ['①','②','③','④','⑤','⑥','⑦','⑧','⑨','⑩'];
+    const names = RES[cur.id] || [];
+    // 週の入浴回数を入居者ごとに集計（浴種が入っている枠を1回とカウント）
+    const bathCount = {};
+    Object.values(this.state.assign).forEach(c => {
+      if (c && c.r && c.t) bathCount[c.r] = (bathCount[c.r] || 0) + 1;
+    });
+    const roster = names.map((n,i) => {
+      const cnt = bathCount['p'+i] || 0;
+      const ok = cnt >= 2;
+      return {
+        mark: marks[i], name: n, count: cnt + '回',
+        ok, badgeBg: ok ? '#E4F1EE' : '#FBE9E5', badgeColor: ok ? '#2E8B7F' : '#C0392B',
+        nameColor: ok ? '#3a403c' : '#a5502f',
+      };
+    });
+    const shortNames = names.filter((n,i) => (bathCount['p'+i] || 0) < 2);
+    const shortCount = shortNames.length;
+    const rOptions = [{id:'',name:'—'}, ...names.map((n,i) => ({ id:'p'+i, name: n }))];
+
+    // dates
+    const now = new Date(this.state.now);
+    const monday = new Date(now); monday.setHours(0,0,0,0);
+    monday.setDate(now.getDate() - ((now.getDay() + 6) % 7) + this.state.weekOffset * 7);
+    const WD = ['月','火','水','木','金','土','日'];
+    const DK = ['mon','tue','wed','thu','fri','sat','sun'];
+    const days = [];
+    for (let i=0;i<7;i++){
+      const dt = new Date(monday); dt.setDate(monday.getDate()+i);
+      const isToday = dt.toDateString() === now.toDateString();
+      const wColor = i===5 ? '#c58a8a' : i===6 ? '#8faed0' : '#3a403c';
+      days.push({ wLabel: WD[i], dLabel:(dt.getMonth()+1)+'/'+dt.getDate(), wColor,
+        wWeight: isToday ? '900':'700',
+        hdrBg: isToday ? (is2?'#EAF0F5':'#EAF4F2') : '#F7F5EF',
+        hdrBorder: isToday ? '1.5px solid '+accent : '1px solid transparent' });
+    }
+    const eraY = monday.getFullYear() - 2018;
+    const last = new Date(monday); last.setDate(monday.getDate()+6);
+    const weekLabel = '令和'+eraY+'年 '+(monday.getMonth()+1)+'月'+monday.getDate()+'日 – '+(last.getMonth()+1)+'月'+last.getDate()+'日';
+    const todayLabel = WD[(now.getDay()+6)%7] + '曜';
+
+    // slots
+    const makeSlots = (period, startH, startM, count) => {
+      const out = []; let h = startH, m = startM;
+      for (let i=0;i<count;i++){
+        const s = h+':'+String(m).padStart(2,'0');
+        let eh = h, em = m+30; if(em>=60){em-=60;eh+=1;}
+        out.push({ id: period+'-'+i, slot:(period==='am'?'午前':'午後'), tag: s+'–'+eh+':'+String(em).padStart(2,'0'), tone:(i===0?'strong':'soft') });
+        h = eh; m = em;
+      }
+      return out;
+    };
+    const SLOTS = [ ...makeSlots('am',9,30,6), ...makeSlots('pm',13,0,6) ];
+
+    // ---- building-wide ピュアット conflict counts ----
+    // 共有設備の判定：特浴系（t/pt）は1号館の1台を全館で共用→全ユニット横断。ピュ個浴(pk)・シャワー(sh)は建物ごと。
+    const deviceScope = (tid, bld) => {
+      if (tid === 'pt' || tid === 't') return 'G::' + tid;
+      if (tid === 'pk' || tid === 'sh') return 'B' + bld + '::' + tid;
+      return null;
+    };
+    const puattoUnits = {}; // scopeKey -> Set of unitIds
+    UNITS.forEach(u => {
+      const ub = u.grp.startsWith('2号館') ? 2 : 1;
+      const a = (u.id === cur.id) ? this.state.assign : this.load(u.id, this.state.weekOffset);
+      Object.keys(a).forEach(k => {
+        const cell = a[k];
+        if (!cell || typeof cell !== 'object') return;
+        const sc = deviceScope(cell.t, ub);
+        if (!sc) return;
+        const token = k.slice(u.id.length + 1);
+        const bucket = token + '|' + sc;
+        (puattoUnits[bucket] = puattoUnits[bucket] || new Set()).add(u.id);
+      });
+    });
+
+    const tintStrong = is2 ? '#EAF0F5' : '#EAF4F2';
+    const rows = SLOTS.map(r => {
+      const barColor = accent, tagColor = accent;
+      const labelBg = r.tone==='strong' ? tintStrong : '#FAF9F5';
+      return {
+        slot: r.slot, tag: r.tag, barColor, tagColor, labelBg,
+        cells: DK.map(dk => {
+          const key = cur.id+'-'+r.id+'-'+dk;
+          const token = r.id+'-'+dk;
+          const cell = this.state.assign[key] || {};
+          const rVal = cell.r || '';
+          const tVal = cell.t || '';
+          const hasR = !!rVal;
+          const meta = typeMeta[tVal];
+          const sc = deviceScope(tVal, bldNo);
+          const isPu = !!sc;
+          const bucket = token + '|' + sc;
+          const conflict = isPu && ((puattoUnits[bucket] && puattoUnits[bucket].size) || 0) > 1;
+          const conflictLabel = tVal === 'sh' ? '⚠ シャワートロリー重複'
+            : (tVal === 't' ? '⚠ 特浴重複' : '⚠ ピュアット重複');
+          const staffN = meta ? meta.staff : 0;
+          const staff = [];
+          for (let i=0;i<staffN;i++){
+            staff.push({
+              val: cell['s'+i] || '',
+              ph: staffN===2 ? ('担当'+(i+1)) : '担当職員',
+              onChange: ((idx)=>(e)=>this.setCell(key, { ['s'+idx]: e.target.value }))(i),
+            });
+          }
+          let bg, border;
+          if (conflict) { bg = '#FBE9E5'; border = '1.5px solid #E0654F'; }
+          else if (hasR) { bg = r.tone==='strong' ? tintStrong : '#FCFBF8'; border = '1px solid '+(is2?'#E1E7EC':'#E4EDE9'); }
+          else { bg = 'transparent'; border = '1px solid transparent'; }
+          return {
+            rVal, rOptions,
+            rOnChange: (e) => this.setCell(key, { r: e.target.value }),
+            rColor: hasR ? '#3a403c' : '#c2c6c0',
+            rWeight: hasR ? '700' : '400',
+            show: hasR,
+            tVal, tOptions: typeOptions,
+            tOnChange: (e) => this.setCell(key, { t: e.target.value }),
+            tColor: conflict ? '#C0392B' : (tVal ? accent : '#b0b4ad'),
+            staff, conflict, conflictLabel, bg, border,
+          };
+        }),
+      };
+    });
+
+    // ---- 対応職員 月次集計（当月・当ユニット）----
+    const ms = this.monthStaff(cur.id, monday);
+    const staffArr = Object.keys(ms.counts)
+      .map(n => ({ name: n, count: ms.counts[n].count, puatto: ms.counts[n].puatto }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'ja'));
+    const staffMaxN = staffArr.reduce((m, p) => Math.max(m, p.count), 0) || 1;
+    const staffTotalN = staffArr.reduce((s, p) => s + p.count, 0);
+    const staffList = staffArr.map((p, i) => ({
+      rank: i + 1, name: p.name, countLabel: p.count + 'コマ',
+      barW: Math.round(p.count / staffMaxN * 100) + '%', barColor: accent,
+      hasPuatto: p.puatto > 0, detail: 'うちピュアット ' + p.puatto + 'コマ',
+    }));
+    const staffMonthLabel = '令和' + (ms.y - 2018) + '年 ' + (ms.mo + 1) + '月度';
+
+    return {
+      unitAvatar: cur.name, unitDisp: cur.disp, unitGrp: cur.grp, unitMethods: methods,
+      unitAccent: accent, unitHeaderBg, unitHeaderBorder, unitBadgeBg, unitBadgeColor,
+      bldNoLabel: bldNo+'号館',
+      weekNavLabel: this.state.weekOffset === 0 ? '今週' : ('今週 +' + this.state.weekOffset + '週'),
+      prevColor: this.state.weekOffset > 0 ? '#3a403c' : '#c7ccc5',
+      nextColor: this.state.weekOffset < this.MAX_WEEKS ? '#3a403c' : '#c7ccc5',
+      showToday: this.state.weekOffset !== 0,
+      onPrev: () => this.changeWeek(-1), onNext: () => this.changeWeek(1), onToday: () => this.changeWeek(-99),
+      onPrint: () => { try { window.print(); } catch(e){} },
+      weekLabel, todayLabel, navGroups, roster, days, rows,
+      shortCount, shortLabel: shortCount + '名', allOk: shortCount === 0,
+      staffList, staffMonthLabel,
+      staffPeople: staffArr.length + '名', staffTotal: staffTotalN + 'コマ',
+      staffHasData: staffArr.length > 0, staffEmpty: staffArr.length === 0,
+    };
+  }
+}
+</script>
+</body>
+</html>

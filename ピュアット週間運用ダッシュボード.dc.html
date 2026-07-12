@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="入浴予定">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#3E8F86">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<script src="./puatto-sync.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #EDEBE3; font-family: 'Noto Sans JP', sans-serif; -webkit-font-smoothing: antialiased; color: #2B302E; }
+</style>
+</helmet>
+<div style="min-height:100vh;padding:28px 32px 40px;max-width:1560px;margin:0 auto">
+
+  <!-- ============ HEADER ============ -->
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:22px">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;color:#737974;font-size:12.5px;font-weight:500;letter-spacing:.04em">
+        <span style="width:9px;height:9px;border-radius:2px;background:#3E8F86;display:inline-block"></span>
+        社会福祉法人 誠光福祉会　えんゆうの郷
+      </div>
+      <h1 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:30px;letter-spacing:.01em;margin:6px 0 0;color:#242926">ピュアット　週間運用予定表</h1>
+      <div style="font-size:13px;color:#6b716c;margin-top:4px">2台運用ダッシュボード　—　1号館 特浴（華・柔）／ 2号館 2階フロア（暮雪）</div>
+    </div>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="text-align:right">
+        <div style="font-size:11px;color:#8a908b;font-weight:500">今週の予定</div>
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:17px;color:#3a403c">令和8年 7月6日 – 7月12日</div>
+      </div>
+      <div style="background:#3E8F86;color:#fff;font-size:12px;font-weight:700;padding:9px 15px;border-radius:10px;box-shadow:0 3px 10px rgba(62,143,134,.28);text-align:center;line-height:1.3">
+        本日<br><span style="font-size:15px">月曜</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ DEVICE STRIP ============ -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:22px">
+
+    <!-- Device 1 -->
+    <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 18px;display:flex;gap:16px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+      <div style="position:relative;flex-shrink:0">
+        <div style="width:88px;height:88px;border-radius:13px;overflow:hidden;background:#DCEFEB;border:1px solid #CFE7E2">
+          <img src="assets/image-3-1.jpeg" alt="ピュアット" style="width:100%;height:100%;object-fit:cover;object-position:56% 46%">
+        </div>
+        <span style="position:absolute;top:-8px;left:-8px;width:28px;height:28px;border-radius:8px;background:#3E8F86;color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(62,143,134,.35)">①</span>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:17px;color:#242926">1号館　華・柔ユニット</span>
+          <span style="font-size:11px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 9px;border-radius:999px">特浴・固定設置</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:10px;flex-wrap:wrap">
+          <div><div style="font-size:10.5px;color:#8a908b">入浴日</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">月・木</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">対象</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">7名</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">介助</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">職員2名</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">洗身</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">5分つかるだけ</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Device 2 -->
+    <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 18px;display:flex;gap:16px;align-items:center;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+      <div style="position:relative;flex-shrink:0">
+        <div style="width:88px;height:88px;border-radius:13px;overflow:hidden;background:#E1EAF0;border:1px solid #D3E2EB">
+          <img src="assets/image-3-1.jpeg" alt="ピュアット" style="width:100%;height:100%;object-fit:cover;object-position:56% 46%">
+        </div>
+        <span style="position:absolute;top:-8px;left:-8px;width:28px;height:28px;border-radius:8px;background:#5588A6;color:#fff;font-weight:900;font-size:15px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 6px rgba(85,136,166,.35)">②</span>
+      </div>
+      <div style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:17px;color:#242926">2号館　暮雪ユニット</span>
+          <span style="font-size:11px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 9px;border-radius:999px">2階フロアで運用</span>
+        </div>
+        <div style="display:flex;gap:18px;margin-top:10px;flex-wrap:wrap">
+          <div><div style="font-size:10.5px;color:#8a908b">入浴日</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">火・金</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">対象</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">7名</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">介助</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">職員2名</div></div>
+          <div><div style="font-size:10.5px;color:#8a908b">留意</div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#C9704F">▲ 要注意 1名</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MAIN: SCHEDULE + APP PANEL ============ -->
+  <div style="display:grid;grid-template-columns:minmax(0,2.35fr) minmax(330px,1fr);gap:18px;align-items:start">
+
+    <!-- ---- SCHEDULE ---- -->
+    <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:18px;box-shadow:0 1px 2px rgba(0,0,0,.03)">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+        <h2 style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:17px;margin:0;color:#242926">週間入浴スケジュール</h2>
+        <div style="display:flex;gap:14px;font-size:11px;color:#6b716c">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:3px;background:#3E8F86;display:inline-block"></span>1号館 ピュアット①</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:11px;height:11px;border-radius:3px;background:#5588A6;display:inline-block"></span>2号館 ピュアット②</span>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;margin:0 -2px;padding:2px">
+      <div style="display:grid;grid-template-columns:52px repeat(7,minmax(132px,1fr));gap:7px;min-width:1044px">
+        <!-- header row -->
+        <div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F2F6F5;border:1.5px solid #3E8F86"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:900;font-size:15px;color:#2f6b64">月</div><div style="font-size:10.5px;color:#8a908b">7/6・本日</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">火</div><div style="font-size:10.5px;color:#8a908b">7/7</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">水</div><div style="font-size:10.5px;color:#8a908b">7/8</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">木</div><div style="font-size:10.5px;color:#8a908b">7/9</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#3a403c">金</div><div style="font-size:10.5px;color:#8a908b">7/10</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#c58a8a">土</div><div style="font-size:10.5px;color:#8a908b">7/11</div></div>
+        <div style="text-align:center;padding:7px 0;border-radius:9px;background:#F7F5EF"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:15px;color:#8faed0">日</div><div style="font-size:10.5px;color:#8a908b">7/12</div></div>
+
+        <!-- AM label -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#F7F5EF;border-radius:9px;padding:6px 0"><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#5b615d">午前</span><span style="font-size:9.5px;color:#a0a59f;writing-mode:vertical-rl;margin-top:4px">9:30–11:30</span></div>
+
+        <!-- MON AM : 1号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #3E8F86;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 8px;border-radius:999px;white-space:nowrap">① 特浴</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">1号館 華・柔</div><div style="font-size:11px;color:#737974;margin-top:1px">特浴 / 前半 4名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span></div>
+          <div onClick="{{ toggle_mon1 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_mon1 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#3E8F86;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_mon1 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#3E8F86;background:#fff;border:1px dashed #9cc7c0;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- TUE AM : 2号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #5588A6;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 8px;border-radius:999px;white-space:nowrap">② 2階</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">2号館 暮雪</div><div style="font-size:11px;color:#737974;margin-top:1px">2階フロア / 前半 4名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span><span style="font-size:10px;color:#C9704F;background:#F6E5DC;padding:2px 7px;border-radius:6px">▲ 要注意1名</span></div>
+          <div onClick="{{ toggle_tue1 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_tue1 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#5588A6;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_tue1 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#4d7f9c;background:#fff;border:1px dashed #a3c0d2;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- WED AM : 点検 -->
+        <div style="background:#FAF9F5;border:1px dashed #D8D4C8;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;min-height:158px">
+          <span style="font-size:10.5px;font-weight:700;color:#9a9f98;background:#EFEDE4;padding:3px 8px;border-radius:999px;align-self:flex-start;white-space:nowrap">機器メンテ</span>
+          <div style="margin-top:2px"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#6b716c">点検・清掃</div><div style="font-size:11px;color:#9a9f98;margin-top:2px">両館ピュアットの<br>フィルター清掃・動作確認</div></div>
+        </div>
+
+        <!-- THU AM : 1号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #3E8F86;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 8px;border-radius:999px;white-space:nowrap">① 特浴</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">1号館 華・柔</div><div style="font-size:11px;color:#737974;margin-top:1px">特浴 / 前半 4名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span></div>
+          <div onClick="{{ toggle_thu1 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_thu1 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#3E8F86;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_thu1 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#3E8F86;background:#fff;border:1px dashed #9cc7c0;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- FRI AM : 2号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #5588A6;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 8px;border-radius:999px;white-space:nowrap">② 2階</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">2号館 暮雪</div><div style="font-size:11px;color:#737974;margin-top:1px">2階フロア / 前半 4名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span><span style="font-size:10px;color:#C9704F;background:#F6E5DC;padding:2px 7px;border-radius:6px">▲ 要注意1名</span></div>
+          <div onClick="{{ toggle_fri1 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_fri1 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#5588A6;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_fri1 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#4d7f9c;background:#fff;border:1px dashed #a3c0d2;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- SAT AM : 一般浴 -->
+        <div style="background:#FAF9F5;border:1px dashed #D8D4C8;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;min-height:158px">
+          <span style="font-size:10.5px;font-weight:700;color:#9a9f98;background:#EFEDE4;padding:3px 8px;border-radius:999px;align-self:flex-start;white-space:nowrap">一般浴</span>
+          <div style="margin-top:2px"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#6b716c">通常入浴介助</div><div style="font-size:11px;color:#9a9f98;margin-top:2px">ピュアット休止<br>希望者の一般浴対応</div></div>
+        </div>
+
+        <!-- SUN AM : 一般浴 -->
+        <div style="background:#FAF9F5;border:1px dashed #D8D4C8;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;min-height:158px">
+          <span style="font-size:10.5px;font-weight:700;color:#9a9f98;background:#EFEDE4;padding:3px 8px;border-radius:999px;align-self:flex-start;white-space:nowrap">一般浴</span>
+          <div style="margin-top:2px"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#6b716c">通常入浴介助</div><div style="font-size:11px;color:#9a9f98;margin-top:2px">ピュアット休止<br>希望者の一般浴対応</div></div>
+        </div>
+
+        <!-- PM label -->
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;background:#F7F5EF;border-radius:9px;padding:6px 0"><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#5b615d">午後</span><span style="font-size:9.5px;color:#a0a59f;writing-mode:vertical-rl;margin-top:4px">13:30–15:30</span></div>
+
+        <!-- MON PM : 1号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #3E8F86;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 8px;border-radius:999px;white-space:nowrap">① 特浴</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">1号館 華・柔</div><div style="font-size:11px;color:#737974;margin-top:1px">特浴 / 後半 3名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span></div>
+          <div onClick="{{ toggle_mon2 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_mon2 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#3E8F86;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_mon2 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#3E8F86;background:#fff;border:1px dashed #9cc7c0;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- TUE PM : 2号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #5588A6;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 8px;border-radius:999px;white-space:nowrap">② 2階</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">2号館 暮雪</div><div style="font-size:11px;color:#737974;margin-top:1px">2階フロア / 後半 3名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span></div>
+          <div onClick="{{ toggle_tue2 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_tue2 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#5588A6;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_tue2 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#4d7f9c;background:#fff;border:1px dashed #a3c0d2;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- WED PM : 予備 -->
+        <div style="background:#FAF9F5;border:1px dashed #D8D4C8;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:6px;min-height:158px">
+          <span style="font-size:10.5px;font-weight:700;color:#9a9f98;background:#EFEDE4;padding:3px 8px;border-radius:999px;align-self:flex-start;white-space:nowrap">予備・個別</span>
+          <div style="margin-top:2px"><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13px;color:#6b716c">個別ケア枠</div><div style="font-size:11px;color:#9a9f98;margin-top:2px">要注意者の状態確認<br>入浴方法の個別調整</div></div>
+        </div>
+
+        <!-- THU PM : 1号館 -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #3E8F86;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#3E8F86;background:#E4F1EE;padding:3px 8px;border-radius:999px;white-space:nowrap">① 特浴</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">1号館 華・柔</div><div style="font-size:11px;color:#737974;margin-top:1px">特浴 / 後半 3名</div></div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:auto"><span style="font-size:10px;color:#5b615d;background:#F1EFE8;padding:2px 7px;border-radius:6px">職員2名</span></div>
+          <div onClick="{{ toggle_thu2 }}" style="cursor:pointer">
+            <sc-if value="{{ rec_thu2 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#3E8F86;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_thu2 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#3E8F86;background:#fff;border:1px dashed #9cc7c0;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- FRI PM : 2号館 + 週次ふりかえり -->
+        <div style="background:#fff;border:1px solid #E4E1D8;border-left:4px solid #5588A6;border-radius:11px;padding:10px 11px;display:flex;flex-direction:column;gap:7px;min-height:158px">
+          <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:10.5px;font-weight:700;color:#4d7f9c;background:#E7EFF4;padding:3px 8px;border-radius:999px;white-space:nowrap">② 2階</span></div>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">2号館 暮雪</div><div style="font-size:11px;color:#737974;margin-top:1px">2階フロア / 後半 3名</div></div>
+          <div style="font-size:9.5px;color:#7a6a3f;background:#F5EED8;padding:3px 6px;border-radius:6px;line-height:1.3">✦ 入浴後カンファで<br>週次ふりかえり</div>
+          <div onClick="{{ toggle_fri2 }}" style="cursor:pointer;margin-top:auto">
+            <sc-if value="{{ rec_fri2 }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:700;color:#fff;background:#5588A6;padding:5px;border-radius:7px">✓ 記録済</span></sc-if>
+            <sc-if value="{{ not_fri2 }}" hint-placeholder-val="{{ true }}"><span style="display:flex;align-items:center;justify-content:center;gap:4px;font-size:10.5px;font-weight:600;color:#4d7f9c;background:#fff;border:1px dashed #a3c0d2;padding:5px;border-radius:7px">＋ 肌チェック</span></sc-if>
+          </div>
+        </div>
+
+        <!-- SAT PM -->
+        <div style="background:#FBFAF7;border:1px dashed #E4E0D5;border-radius:11px;padding:10px 11px;display:flex;align-items:center;justify-content:center;min-height:158px"><span style="font-size:20px;color:#cfccc0">—</span></div>
+        <!-- SUN PM -->
+        <div style="background:#FBFAF7;border:1px dashed #E4E0D5;border-radius:11px;padding:10px 11px;display:flex;align-items:center;justify-content:center;min-height:158px"><span style="font-size:20px;color:#cfccc0">—</span></div>
+      </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-top:14px;padding:10px 13px;background:#F4F1E9;border-radius:10px;font-size:11.5px;color:#6b716c;line-height:1.5">
+        <span style="color:#3E8F86;font-weight:700">運用メモ</span>
+        お湯に約5分つかるだけで洗身完了（こすり洗い・石鹸不要）。ADLの高い方はシャンプーを一部継続。水曜は機器点検・要注意者の個別対応にあて、負担を平準化します。
+      </div>
+    </div>
+
+    <!-- ---- SKINCARE APP PANEL ---- -->
+    <div style="display:flex;flex-direction:column;gap:14px">
+
+      <!-- app header + progress -->
+      <div style="background:#2E6B64;border-radius:16px;padding:18px;color:#eafaf7;box-shadow:0 3px 14px rgba(46,107,100,.22)">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:34px;height:34px;border-radius:9px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:17px">📱</span>
+          <div><div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:16px;color:#fff">スキンケアアプリ連携</div><div style="font-size:10.5px;color:#a9d6cf">皮膚状態の変化に気づく</div></div>
+        </div>
+        <div style="margin-top:15px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;color:#c3e3de"><span>今週の記録</span><span><b style="font-family:'Zen Kaku Gothic New',sans-serif;font-size:20px;color:#fff">{{ doneCount }}</b> / 8 枠</span></div>
+          <div style="height:9px;background:rgba(255,255,255,.18);border-radius:999px;margin-top:7px;overflow:hidden"><div style="height:100%;background:#8fded1;border-radius:999px;transition:width .3s;width: {{ donePct }}%"></div></div>
+          <div style="font-size:10.5px;color:#a9d6cf;margin-top:7px">各予定表のボタンを押すと記録済みになります</div>
+        </div>
+      </div>
+
+      <!-- recording flow -->
+      <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 17px">
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926;margin-bottom:11px">記録の流れ</div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#E4F1EE;color:#3E8F86;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center">1</span><div style="font-size:12px;color:#4a504c;line-height:1.45"><b style="color:#2b302e">入浴</b>：お湯に約5分つかる（こすり洗いなし）</div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#E4F1EE;color:#3E8F86;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center">2</span><div style="font-size:12px;color:#4a504c;line-height:1.45"><b style="color:#2b302e">着衣前に肌チェック</b>：発赤・乾燥・掻痒などを目視確認</div></div>
+          <div style="display:flex;gap:10px;align-items:flex-start"><span style="flex-shrink:0;width:22px;height:22px;border-radius:7px;background:#E4F1EE;color:#3E8F86;font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center">3</span><div style="font-size:12px;color:#4a504c;line-height:1.45"><b style="color:#2b302e">アプリへ記録</b>：その場でタップ入力。写真も添付可</div></div>
+        </div>
+      </div>
+
+      <!-- check items -->
+      <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 17px">
+        <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926;margin-bottom:11px">肌チェック項目</div>
+        <div style="display:flex;flex-wrap:wrap;gap:7px">
+          <span style="font-size:11.5px;color:#4a504c;background:#F4F1E9;border:1px solid #E7E3D8;padding:5px 11px;border-radius:999px">発赤</span>
+          <span style="font-size:11.5px;color:#4a504c;background:#F4F1E9;border:1px solid #E7E3D8;padding:5px 11px;border-radius:999px">乾燥</span>
+          <span style="font-size:11.5px;color:#C9704F;background:#F6E5DC;border:1px solid #EAC9B8;padding:5px 11px;border-radius:999px">掻痒（かゆみ）</span>
+          <span style="font-size:11.5px;color:#4a504c;background:#F4F1E9;border:1px solid #E7E3D8;padding:5px 11px;border-radius:999px">傷・表皮剥離</span>
+          <span style="font-size:11.5px;color:#4a504c;background:#F4F1E9;border:1px solid #E7E3D8;padding:5px 11px;border-radius:999px">変化なし</span>
+        </div>
+      </div>
+
+      <!-- caution handoff -->
+      <div style="background:#FBF0E9;border:1px solid #EED3C3;border-radius:16px;padding:16px 17px">
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:9px"><span style="color:#C9704F;font-weight:900;font-size:15px">▲</span><span style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#a5502f">要注意者の申し送り</span></div>
+        <div style="font-size:12px;color:#7a4a35;line-height:1.5"><b>2号館 暮雪ユニット・皮膚脆弱 1名</b><br>試用時に痒み増強の事例あり。<b>毎回かならず掻痒の有無を確認</b>し、悪化時は入浴方法（時間短縮・頻度調整）を個別に見直します。記録は要注意マーク付きでアプリに残し、次番へ申し送り。</div>
+      </div>
+
+      <!-- weekly review + QR -->
+      <div style="background:#fff;border:1px solid #E2DFD6;border-radius:16px;padding:16px 17px;display:flex;gap:14px;align-items:center">
+        <div style="flex:1">
+          <div style="font-family:'Zen Kaku Gothic New',sans-serif;font-weight:700;font-size:13.5px;color:#242926">週次ふりかえり</div>
+          <div style="font-size:11.5px;color:#6b716c;line-height:1.5;margin-top:4px">金曜午後のカンファでアプリの1週間の記録を確認し、皮膚状態の変化を評価。QRからアプリを開いて記録できます。</div>
+        </div>
+        <div style="flex-shrink:0;text-align:center">
+          <div style="width:76px;height:76px;border-radius:11px;border:1.5px dashed #b9d5cf;background:repeating-linear-gradient(45deg,#EAF4F1,#EAF4F1 5px,#F6FBFA 5px,#F6FBFA 10px);display:flex;align-items:center;justify-content:center;color:#5b9a90;font-size:10px;font-weight:700;font-family:monospace">QR</div>
+          <div style="font-size:9.5px;color:#8a908b;margin-top:4px">アプリを開く</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div style="text-align:center;font-size:10.5px;color:#a0a59f;margin-top:20px">えんゆうの郷　ピュアット週間運用予定表　／　特許第6353936号 ウルトラファインバブル洗身　／　運用開始週：令和8年7月</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showRecordButtons&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;表示&quot;}}">
+class Component extends DCLogic {
+  STORE_KEY = 'puatto-dashboard-rec';
+  state = { rec: this.loadRec() };
+  componentDidMount() { this._sync = () => this.setState({ rec: this.loadRec() }); window.addEventListener('puatto-synced', this._sync); }
+  componentWillUnmount() { window.removeEventListener('puatto-synced', this._sync); }
+  loadRec() {
+    try { return JSON.parse(localStorage.getItem('puatto-dashboard-rec')) || {}; }
+    catch (e) { return {}; }
+  }
+  saveRec(rec) {
+    try { localStorage.setItem(this.STORE_KEY, JSON.stringify(rec)); } catch (e) {}
+  }
+  renderVals() {
+    const ids = ['mon1','mon2','tue1','tue2','thu1','thu2','fri1','fri2'];
+    const rec = this.state.rec;
+    const showBtns = this.props.showRecordButtons ?? true;
+    const vals = {};
+    ids.forEach(id => {
+      vals['rec_' + id] = showBtns && !!rec[id];
+      vals['not_' + id] = showBtns && !rec[id];
+      vals['toggle_' + id] = () => this.setState(s => {
+        const next = { ...s.rec, [id]: !s.rec[id] };
+        this.saveRec(next);
+        return { rec: next };
+      });
+    });
+    const done = ids.filter(id => rec[id]).length;
+    vals.doneCount = done;
+    vals.donePct = Math.round((done / ids.length) * 100);
+    return vals;
+  }
+}
+</script>
+</body>
+</html>
