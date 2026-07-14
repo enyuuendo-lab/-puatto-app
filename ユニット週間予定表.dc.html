@@ -2,14 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="入浴予定">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#3E8F86">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <script src="./support.js"></script>
 </head>
 <body>
@@ -140,10 +133,10 @@
               <select class="uw" value="{{ cell.rVal }}" onChange="{{ cell.rOnChange }}" style="color:{{ cell.rColor }};font-weight:{{ cell.rWeight }}">
                 <sc-for list="{{ cell.rOptions }}" as="opt" hint-placeholder-count="11"><option value="{{ opt.id }}">{{ opt.name }}</option></sc-for>
               </select>
-              <sc-if value="{{ cell.show }}" hint-placeholder-val="{{ false }}">
-                <select class="uw ut" value="{{ cell.tVal }}" onChange="{{ cell.tOnChange }}" style="color:{{ cell.tColor }};font-weight:700">
-                  <sc-for list="{{ cell.tOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
-                </select>
+              <select class="uw ut" value="{{ cell.tVal }}" onChange="{{ cell.tOnChange }}" style="color:{{ cell.tColor }};font-weight:700">
+                <sc-for list="{{ cell.tOptions }}" as="o" hint-placeholder-count="5"><option value="{{ o.id }}">{{ o.name }}</option></sc-for>
+              </select>
+              <sc-if value="{{ cell.showStaff }}" hint-placeholder-val="{{ false }}">
                 <sc-for list="{{ cell.staff }}" as="st" hint-placeholder-count="1">
                   <input class="stf" value="{{ st.val }}" onChange="{{ st.onChange }}" onInput="{{ st.onChange }}" placeholder="{{ st.ph }}">
                 </sc-for>
@@ -260,7 +253,17 @@ class Component extends DCLogic {
     return m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0')+'-'+String(m.getDate()).padStart(2,'0');
   }
   storeKey(id, off){ return 'puatto-unit2-' + id + '-' + this.mondayISO(off); }
-  load(id, off){ try { return JSON.parse(localStorage.getItem(this.storeKey(id, off))) || {}; } catch(e){ return {}; } }
+  rawLoad(id, off){ try { const s = localStorage.getItem(this.storeKey(id, off)); return s ? (JSON.parse(s) || null) : null; } catch(e){ return null; } }
+  // その週の入力があればそれを、無ければ直近の入力済みの週を自動で引き継ぐ（コピーなので編集は独立）
+  load(id, off){
+    const own = this.rawLoad(id, off);
+    if (own && Object.keys(own).length) return own;
+    for (let k = off - 1; k >= 0; k--){
+      const prev = this.rawLoad(id, k);
+      if (prev && Object.keys(prev).length) return JSON.parse(JSON.stringify(prev));
+    }
+    return {};
+  }
   save(id, off, a){ try { localStorage.setItem(this.storeKey(id, off), JSON.stringify(a)); } catch(e){} }
   monthStaff(id, refDate){
     const y = refDate.getFullYear(), mo = refDate.getMonth();
@@ -483,14 +486,14 @@ class Component extends DCLogic {
           }
           let bg, border;
           if (conflict) { bg = '#FBE9E5'; border = '1.5px solid #E0654F'; }
-          else if (hasR) { bg = r.tone==='strong' ? tintStrong : '#FCFBF8'; border = '1px solid '+(is2?'#E1E7EC':'#E4EDE9'); }
+          else if (hasR || tVal) { bg = r.tone==='strong' ? tintStrong : '#FCFBF8'; border = '1px solid '+(is2?'#E1E7EC':'#E4EDE9'); }
           else { bg = 'transparent'; border = '1px solid transparent'; }
           return {
             rVal, rOptions,
             rOnChange: (e) => this.setCell(key, { r: e.target.value }),
             rColor: hasR ? '#3a403c' : '#c2c6c0',
             rWeight: hasR ? '700' : '400',
-            show: hasR,
+            showStaff: !!tVal,
             tVal, tOptions: typeOptions,
             tOnChange: (e) => this.setCell(key, { t: e.target.value }),
             tColor: conflict ? '#C0392B' : (tVal ? accent : '#b0b4ad'),
