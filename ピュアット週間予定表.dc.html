@@ -252,23 +252,31 @@ class Component extends DCLogic {
   loadMain(off){ try { const s = localStorage.getItem(this.mainKey(off)); return s ? (JSON.parse(s) || null) : null; } catch(e){ return null; } }
   saveMain(off, data){ try { localStorage.setItem(this.mainKey(off), JSON.stringify(data)); } catch(e){} }
   loadWeek(off){
-    let data = this.loadMain(off);
-    if (!data || !Object.keys(data).length) {
-      // 直近の入力済みの週から自動で引き継ぐ（無ければ初期値）
-      let inherited = null;
-      for (let k = off - 1; k >= off - 12; k--){
-        const prev = this.loadMain(k);
-        if (prev && Object.keys(prev).length) { inherited = JSON.parse(JSON.stringify(prev)); break; }
-      }
-      data = inherited || (off === 0 ? { ...this.DEF } : {});
+    const own = this.loadMain(off) || {};
+    let base = null;
+    for (let k = off - 1; k >= off - 12; k--){
+      const prev = this.loadMain(k);
+      if (prev && Object.keys(prev).length) { base = JSON.parse(JSON.stringify(prev)); break; }
     }
+    let data = { ...(base || (off === 0 ? { ...this.DEF } : {})), ...own };
     this.setState({ weekOffset: off, assign: data });
   }
   changeWeek(delta){
     const off = Math.min(this.MAX_WEEKS, Math.max(0, this.state.weekOffset + delta));
     if (off !== this.state.weekOffset) this.loadWeek(off);
   }
-  loadUnit(id){ try { return JSON.parse(localStorage.getItem('puatto-unit2-'+id+'-'+this.mondayISO(this.state.weekOffset))) || {}; } catch(e){ return {}; } }
+  rawUnit(id, off){ try { const s = localStorage.getItem('puatto-unit2-'+id+'-'+this.mondayISO(off)); return s ? (JSON.parse(s) || null) : null; } catch(e){ return null; } }
+  loadUnit(id){
+    const off = this.state.weekOffset;
+    const own = this.rawUnit(id, off) || {};
+    // 直近の入力済み週をベースに、その週の入力を上書き（部分入力でも残りは引き継ぐ）
+    let base = {};
+    for (let k = off - 1; k >= off - 12; k--){
+      const prev = this.rawUnit(id, k);
+      if (prev && Object.keys(prev).length) { base = prev; break; }
+    }
+    return { ...base, ...own };
+  }
   setField(key, patch){ this.setState(s => { const prev = s.assign[key] || {}; const a = { ...s.assign, [key]: { ...prev, ...patch } }; this.saveMain(s.weekOffset, a); return { assign: a }; }); }
 
   renderVals(){
