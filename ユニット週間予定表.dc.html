@@ -258,7 +258,8 @@ class Component extends DCLogic {
   load(id, off){
     const own = this.rawLoad(id, off);
     if (own && Object.keys(own).length) return own;
-    for (let k = off - 1; k >= 0; k--){
+    // 直近の入力済みの週（過去週も含めて最大12週さかのぼる）から引き継ぐ
+    for (let k = off - 1; k >= off - 12; k--){
       const prev = this.rawLoad(id, k);
       if (prev && Object.keys(prev).length) return JSON.parse(JSON.stringify(prev));
     }

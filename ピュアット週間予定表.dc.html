@@ -249,11 +249,19 @@ class Component extends DCLogic {
     return m.getFullYear()+'-'+String(m.getMonth()+1).padStart(2,'0')+'-'+String(m.getDate()).padStart(2,'0');
   }
   mainKey(off){ return 'puatto-main-'+this.mondayISO(off); }
-  loadMain(off){ try { return JSON.parse(localStorage.getItem(this.mainKey(off))); } catch(e){ return null; } }
+  loadMain(off){ try { const s = localStorage.getItem(this.mainKey(off)); return s ? (JSON.parse(s) || null) : null; } catch(e){ return null; } }
   saveMain(off, data){ try { localStorage.setItem(this.mainKey(off), JSON.stringify(data)); } catch(e){} }
   loadWeek(off){
     let data = this.loadMain(off);
-    if (!data) { data = (off === 0) ? { ...this.DEF } : {}; }
+    if (!data || !Object.keys(data).length) {
+      // 直近の入力済みの週から自動で引き継ぐ（無ければ初期値）
+      let inherited = null;
+      for (let k = off - 1; k >= off - 12; k--){
+        const prev = this.loadMain(k);
+        if (prev && Object.keys(prev).length) { inherited = JSON.parse(JSON.stringify(prev)); break; }
+      }
+      data = inherited || (off === 0 ? { ...this.DEF } : {});
+    }
     this.setState({ weekOffset: off, assign: data });
   }
   changeWeek(delta){
